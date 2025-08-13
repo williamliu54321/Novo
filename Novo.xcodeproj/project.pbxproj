@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		EF587F742E4D109F007A97D1 /* Novo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EF587F6E2E4D109F007A97D1 /* Novo.xcdatamodeld */; };
+		EF587F752E4D109F007A97D1 /* NovoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF587F6F2E4D109F007A97D1 /* NovoApp.swift */; };
+		EF587F762E4D109F007A97D1 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF587F702E4D109F007A97D1 /* Persistence.swift */; };
+		EF587F782E4D109F007A97D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF587F6B2E4D109F007A97D1 /* Assets.xcassets */; };
+		EF587F7F2E4D1B15007A97D1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF587F7E2E4D1B15007A97D1 /* ContentView.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		EF822C712E4C0E80002D1759 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,30 +32,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EF587F6B2E4D109F007A97D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EF587F6C2E4D109F007A97D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EF587F6D2E4D109F007A97D1 /* Novo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Novo.entitlements; sourceTree = "<group>"; };
+		EF587F6F2E4D109F007A97D1 /* NovoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovoApp.swift; sourceTree = "<group>"; };
+		EF587F702E4D109F007A97D1 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		EF587F732E4D109F007A97D1 /* Novo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Novo.xcdatamodel; sourceTree = "<group>"; };
+		EF587F7E2E4D1B15007A97D1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EF822C5C2E4C0E7F002D1759 /* Novo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Novo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF822C702E4C0E80002D1759 /* NovoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NovoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF822C7A2E4C0E80002D1759 /* NovoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NovoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		EF822C822E4C0E80002D1759 /* Exceptions for "Novo" folder in "Novo" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = EF822C5B2E4C0E7F002D1759 /* Novo */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		EF822C5E2E4C0E7F002D1759 /* Novo */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				EF822C822E4C0E80002D1759 /* Exceptions for "Novo" folder in "Novo" target */,
-			);
-			path = Novo;
-			sourceTree = "<group>";
-		};
 		EF822C732E4C0E80002D1759 /* NovoTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = NovoTests;
@@ -85,10 +82,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EF587F722E4D109F007A97D1 /* Novo */ = {
+			isa = PBXGroup;
+			children = (
+				EF587F6B2E4D109F007A97D1 /* Assets.xcassets */,
+				EF587F6C2E4D109F007A97D1 /* Info.plist */,
+				EF587F6D2E4D109F007A97D1 /* Novo.entitlements */,
+				EF587F6E2E4D109F007A97D1 /* Novo.xcdatamodeld */,
+				EF587F6F2E4D109F007A97D1 /* NovoApp.swift */,
+				EF587F702E4D109F007A97D1 /* Persistence.swift */,
+				EF587F7E2E4D1B15007A97D1 /* ContentView.swift */,
+			);
+			path = Novo;
+			sourceTree = "<group>";
+		};
 		EF822C532E4C0E7F002D1759 = {
 			isa = PBXGroup;
 			children = (
-				EF822C5E2E4C0E7F002D1759 /* Novo */,
+				EF587F722E4D109F007A97D1 /* Novo */,
 				EF822C732E4C0E80002D1759 /* NovoTests */,
 				EF822C7D2E4C0E80002D1759 /* NovoUITests */,
 				EF822C5D2E4C0E7F002D1759 /* Products */,
@@ -119,9 +130,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				EF822C5E2E4C0E7F002D1759 /* Novo */,
 			);
 			name = Novo;
 			packageProductDependencies = (
@@ -225,6 +233,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF587F782E4D109F007A97D1 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,6 +258,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF587F742E4D109F007A97D1 /* Novo.xcdatamodeld in Sources */,
+				EF587F752E4D109F007A97D1 /* NovoApp.swift in Sources */,
+				EF587F7F2E4D1B15007A97D1 /* ContentView.swift in Sources */,
+				EF587F762E4D109F007A97D1 /* Persistence.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -608,6 +621,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		EF587F6E2E4D109F007A97D1 /* Novo.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				EF587F732E4D109F007A97D1 /* Novo.xcdatamodel */,
+			);
+			currentVersion = EF587F732E4D109F007A97D1 /* Novo.xcdatamodel */;
+			path = Novo.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = EF822C542E4C0E7F002D1759 /* Project object */;
 }

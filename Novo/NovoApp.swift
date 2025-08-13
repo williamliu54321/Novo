@@ -13,7 +13,7 @@ struct NovoApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SummaryView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
