@@ -214,14 +214,49 @@ struct AddShotSectionView: View {
 // MARK: "After Shot" Components
 struct ShotConfirmationView: View {
     let gradient = AngularGradient(gradient: Gradient(colors: [.red, .orange, .yellow, .green, .blue]), center: .center, startAngle: .degrees(135), endAngle: .degrees(135 + 270))
+    
     var body: some View {
         VStack(spacing: 20) {
             ZStack {
-                Circle().trim(from: 0.0, to: 0.75).stroke(Color(UIColor.systemGray5), style: StrokeStyle(lineWidth: 30, lineCap: .round)).rotationEffect(.degrees(135))
-                Circle().trim(from: 0.0, to: 0.70).stroke(gradient, style: StrokeStyle(lineWidth: 30, lineCap: .round)).rotationEffect(.degrees(135))
-                VStack(spacing: 4) { Text("You did it!").font(.title).fontWeight(.bold); Text("Shot taken today at 12:00am").font(.subheadline).foregroundColor(.secondary) }
-            }.frame(height: 200)
-            Button(action: {}) { Text("Edit shot").fontWeight(.semibold).foregroundColor(.white).padding(.vertical, 12).padding(.horizontal, 40).background(Color.blue).cornerRadius(20) }
+                // 1. The Gauge
+                Circle()
+                    .trim(from: 0.0, to: 0.75)
+                    .stroke(Color(UIColor.systemGray5), style: StrokeStyle(lineWidth: 30, lineCap: .round))
+                    .rotationEffect(.degrees(135))
+                
+                Circle()
+                    .trim(from: 0.0, to: 0.70)
+                    .stroke(gradient, style: StrokeStyle(lineWidth: 30, lineCap: .round))
+                    .rotationEffect(.degrees(135))
+
+                // 2. The Text Content
+                VStack(spacing: 4) {
+                    Text("You did it!")
+                        .font(.title)
+                        .fontWeight(.bold)
+                    
+                    Text("Shot taken today\nat 12:00am")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+                // --- THE FIX IS HERE ---
+                // We've further reduced the bottom padding to lower the text.
+                .padding(.bottom, 25)
+                // --- END OF FIX ---
+            }
+            .frame(height: 200)
+
+            // 3. The Button
+            Button(action: {}) {
+                Text("Edit shot")
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 40)
+                    .background(Color.blue)
+                    .cornerRadius(20)
+            }
         }
     }
 }
