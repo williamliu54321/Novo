@@ -28,7 +28,9 @@ enum ActivityLevel: String, CaseIterable, Identifiable {
 // The ViewModel: Brains of the operation
 @MainActor // Ensure all UI updates happen on the main thread
 class OnboardingViewModel: ObservableObject {
-
+    
+    @Published var journeyStatus: String? // ADD THIS LINE
+    @Published var medication: String? // THIS MUST EXIST
 
     @Published var name: String = ""
     @Published var fitnessGoal: FitnessGoal = .loseWeight
@@ -56,6 +58,7 @@ class OnboardingViewModel: ObservableObject {
         newUserProfile.dateOfBirth = self.dateOfBirth
         newUserProfile.activityLevel = self.activityLevel.rawValue
         newUserProfile.agreedToTerms = self.hasAgreedToTerms
+        newUserProfile.journeyStatus = self.journeyStatus // ADD THIS LINE
         newUserProfile.onboardingCompletedDate = Date()
         
         do {

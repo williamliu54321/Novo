@@ -2,7 +2,10 @@ import SwiftUI
 
 // Define the discrete steps of our flow
 enum OnboardingStep: Hashable {
+    case journeyStart // <-- ADD THIS
     case name, goal, dateOfBirth, activity, terms
+    // Adding medication and dose here to match the switch statement
+    case medication, dose
 }
 
 struct OnboardingFlowView: View {
@@ -16,10 +19,13 @@ struct OnboardingFlowView: View {
 
     var body: some View {
         NavigationStack(path: $navigationPath) {
-            QuestionNameView() // The first screen
+            
+            OnboardingJourneyStartView()
+            
                 .navigationDestination(for: OnboardingStep.self) { step in
-                    // This is where the coordinator decides which view to show
                     switch step {
+                    case .journeyStart:
+                        OnboardingJourneyStartView()
                     case .name:
                         QuestionNameView()
                     case .goal:
@@ -30,7 +36,22 @@ struct OnboardingFlowView: View {
                         QuestionActivityView()
                     case .terms:
                         QuestionTermsView(onComplete: handleCompletion)
-                    }
+                        
+                    // --- BRACKETS FIXED HERE ---
+                    // The following cases have been moved inside the switch statement's closing brace.
+                    case .medication:
+                        OnboardingSingleSelectionView(
+                            title: "Which GLP-1 medication are you taking?",
+                            subtitle: "If it's not listed, choose \"Other\".", // Example of using the optional subtitle
+                            options: ["Zepbound®", "Mounjaro®", "Ozempic®", "Wegovy®", "Trulicity®", "Compounded Semaglutide", "Compounded Tirzepatide", "Other"],
+                            selection: $viewModel.medication, // Binds to the ViewModel
+                            nextStep: .dose,                   // Tells it where to go next
+                            progress: 0.2                      // Sets the progress bar
+                        )
+
+                    default:
+                        Text("View for this step is not built yet.")
+                    } // <-- This is the correct closing brace for the switch statement.
                 }
         }
         // All child views will have access to the same instance of the ViewModel
