@@ -1,34 +1,17 @@
-//
-//  OnboardingSelectionButton.swift
-//  Novo
-//
-//  Created by William Liu on 2025-08-20.
-//
-
 import SwiftUI
 
-/// A reusable component for the main selection buttons in the onboarding flow.
-/// It displays a title and can optionally display an SF Symbol icon to the left.
+/// A reusable, styled button for the onboarding flow.
+/// It can optionally display an SF Symbol icon to the left of the title.
+/// This version is architected to be visually stable and animation-friendly.
 struct OnboardingSelectionButton: View {
     
     // MARK: - Properties
-    
-    /// The name of the SF Symbol to display. This is now optional.
     let iconName: String?
-    
-    /// The text to display on the button.
     let title: String
-    
-    /// A boolean that determines if the button is in its "selected" state.
     let isSelected: Bool
-    
-    /// The action to perform when the button is tapped.
     let action: () -> Void
-
-    // MARK: - Initializer
     
-    // We create a custom initializer. This is a best practice for complex views.
-    // It allows us to make `iconName` optional with a default value of `nil`.
+    // MARK: - Initializer
     init(iconName: String? = nil, title: String, isSelected: Bool, action: @escaping () -> Void) {
         self.iconName = iconName
         self.title = title
@@ -37,14 +20,9 @@ struct OnboardingSelectionButton: View {
     }
 
     // MARK: - Body
-    
     var body: some View {
         Button(action: action) {
             HStack(spacing: 16) {
-                
-                // --- THIS IS THE KEY CHANGE ---
-                // This `if let` block checks if an iconName was provided.
-                // The Image view will only be created if iconName is not nil.
                 if let iconName = iconName {
                     Image(systemName: iconName)
                         .font(.title3)
@@ -55,16 +33,25 @@ struct OnboardingSelectionButton: View {
                     .font(.headline)
                     .fontWeight(.bold)
                 
-                Spacer() // Pushes the content to the left
+                Spacer()
             }
             .padding()
             .frame(maxWidth: .infinity, minHeight: 60)
-            .background(isSelected ? Color.black : Color(uiColor: .systemGray6))
+            // The foreground color is now a simple modifier.
             .foregroundColor(isSelected ? .white : .primary)
+            .background(isSelected ? Color.black : Color(uiColor: .systemGray6))
             .cornerRadius(12)
         }
+        // Applying the buttonStyle here ensures the tap animation is correct.
+        .buttonStyle(.plain)
+        
+        // --- THIS IS THE KEY TO FIXING THE ANIMATION ---
+        // By explicitly telling the button to animate when its `isSelected`
+        // state changes, we guarantee the animation will happen everywhere.
+        .animation(.easeInOut(duration: 0.1), value: isSelected)
     }
 }
+
 
 // MARK: - Preview
 struct OnboardingSelectionButton_Previews: PreviewProvider {

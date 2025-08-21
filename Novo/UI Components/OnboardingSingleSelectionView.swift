@@ -1,4 +1,4 @@
-import SwiftUIll
+import SwiftUI
 
 struct OnboardingSingleSelectionView: View {
     @EnvironmentObject var viewModel: OnboardingViewModel
