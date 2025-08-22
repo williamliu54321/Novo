@@ -7,6 +7,7 @@
 
 
 import SwiftUI
+import Superwall // <-- Import Superwall
 
 // This is your main routing view. It decides what the user sees upon launch.
 struct RootView: View {
@@ -25,9 +26,6 @@ struct RootView: View {
             // We provide the `onComplete` callback here. This is the code
             // that will be executed when the OnboardingFlowView says it's done.
             OnboardingFlowView {
-                // When the onboarding flow completes, we set our persistent
-                // flag to true. This will cause this ContentView to re-render
-                // and the `if` condition will now be true, showing MainAppView.
                 self.hasCompletedOnboarding = true
             }
         }

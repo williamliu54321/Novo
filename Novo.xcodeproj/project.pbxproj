@@ -24,7 +24,7 @@
 		EF5880C12E56EC2E007A97D1 /* OnboardingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5880C02E56EC2E007A97D1 /* OnboardingButton.swift */; };
 		EF5880C32E56EC39007A97D1 /* OnboardingSingleSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5880C22E56EC39007A97D1 /* OnboardingSingleSelectionView.swift */; };
 		EF5880C72E56F30F007A97D1 /* OnboardingScreenLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5880C62E56F30F007A97D1 /* OnboardingScreenLayout.swift */; };
-		EF5880CF2E5839EC007A97D1 /* OnboardingStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5880CE2E5839EC007A97D1 /* OnboardingStep.swift */; };
+		EF5880D12E5847C9007A97D1 /* OnboardingIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5880D02E5847C9007A97D1 /* OnboardingIntroView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,7 +64,7 @@
 		EF5880C02E56EC2E007A97D1 /* OnboardingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingButton.swift; sourceTree = "<group>"; };
 		EF5880C22E56EC39007A97D1 /* OnboardingSingleSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSingleSelectionView.swift; sourceTree = "<group>"; };
 		EF5880C62E56F30F007A97D1 /* OnboardingScreenLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreenLayout.swift; sourceTree = "<group>"; };
-		EF5880CE2E5839EC007A97D1 /* OnboardingStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStep.swift; sourceTree = "<group>"; };
+		EF5880D02E5847C9007A97D1 /* OnboardingIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingIntroView.swift; sourceTree = "<group>"; };
 		EF822C5C2E4C0E7F002D1759 /* Novo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Novo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF822C702E4C0E80002D1759 /* NovoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NovoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF822C7A2E4C0E80002D1759 /* NovoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NovoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,7 +125,6 @@
 		EF5880BB2E56EA7B007A97D1 /* UI Components */ = {
 			isa = PBXGroup;
 			children = (
-				EF5880CE2E5839EC007A97D1 /* OnboardingStep.swift */,
 				EF5880C22E56EC39007A97D1 /* OnboardingSingleSelectionView.swift */,
 				EF5880C62E56F30F007A97D1 /* OnboardingScreenLayout.swift */,
 				EF5880C02E56EC2E007A97D1 /* OnboardingButton.swift */,
@@ -160,6 +159,7 @@
 			children = (
 				EF5880BB2E56EA7B007A97D1 /* UI Components */,
 				EF5880B72E56E88F007A97D1 /* OnboardingPageInfo.swift */,
+				EF5880D02E5847C9007A97D1 /* OnboardingIntroView.swift */,
 				EF5880BE2E56EA95007A97D1 /* OnboardingJourneyStartView.swift */,
 				EF5880AD2E56E108007A97D1 /* OnboardingViewModel.swift */,
 				EF5880AF2E56E10D007A97D1 /* OnboardingFlowView.swift */,
@@ -339,11 +339,11 @@
 				EF5880B42E56E24D007A97D1 /* RootView.swift in Sources */,
 				EF5880C72E56F30F007A97D1 /* OnboardingScreenLayout.swift in Sources */,
 				EF5880B22E56E113007A97D1 /* MainAppView.swift in Sources */,
-				EF5880CF2E5839EC007A97D1 /* OnboardingStep.swift in Sources */,
 				EF5880AC2E56E0ED007A97D1 /* QuestionNameView.swift in Sources */,
 				EF5880BD2E56EA8C007A97D1 /* OnboardingHeaderView.swift in Sources */,
 				EF5880BA2E56E9C9007A97D1 /* OnboardingSelectionButton.swift in Sources */,
 				EF5880BF2E56EA95007A97D1 /* OnboardingJourneyStartView.swift in Sources */,
+				EF5880D12E5847C9007A97D1 /* OnboardingIntroView.swift in Sources */,
 				EF587F762E4D109F007A97D1 /* Persistence.swift in Sources */,
 				EF5880B82E56E88F007A97D1 /* OnboardingPageInfo.swift in Sources */,
 			);
