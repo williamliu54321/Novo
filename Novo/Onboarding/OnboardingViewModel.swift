@@ -1,10 +1,4 @@
-//
-//  FitnessGoal.swift
-//  Testing
-//
-//  Created by William Liu on 2025-08-16.
-//
-
+// In OnboardingViewModel.swift
 
 import Foundation
 import CoreData
@@ -29,8 +23,9 @@ enum ActivityLevel: String, CaseIterable, Identifiable {
 @MainActor // Ensure all UI updates happen on the main thread
 class OnboardingViewModel: ObservableObject {
     
-    @Published var journeyStatus: String? // ADD THIS LINE
-    @Published var medication: String? // THIS MUST EXIST
+    @Published var journeyStatus: String?
+    @Published var medication: String?
+    @Published var dose: Double? // <-- 1. ADD THE DOSE PROPERTY (as a Double)
 
     @Published var name: String = ""
     @Published var fitnessGoal: FitnessGoal = .loseWeight
@@ -39,7 +34,6 @@ class OnboardingViewModel: ObservableObject {
     @Published var hasAgreedToTerms: Bool = false
     
     // MARK: - Validation Logic
-    // The view can use these to enable/disable navigation
     var isNameValid: Bool {
         !name.trimmingCharacters(in: .whitespaces).isEmpty
     }
@@ -58,15 +52,20 @@ class OnboardingViewModel: ObservableObject {
         newUserProfile.dateOfBirth = self.dateOfBirth
         newUserProfile.activityLevel = self.activityLevel.rawValue
         newUserProfile.agreedToTerms = self.hasAgreedToTerms
-        newUserProfile.journeyStatus = self.journeyStatus // ADD THIS LINE
+        newUserProfile.journeyStatus = self.journeyStatus
         newUserProfile.onboardingCompletedDate = Date()
+        
+        // --- 2. ADD THE SAVING LOGIC FOR THE DOSE ---
+        // Safely unwrap the optional Double and assign it.
+        if let dose = self.dose {
+            newUserProfile.dose = dose
+        }
         
         do {
             try context.save()
             print("User Profile Saved Successfully!")
         } catch {
             // In a real app, you should handle this error gracefully.
-            // For example, by publishing an error state and showing an alert.
             print("Failed to save user profile: \(error.localizedDescription)")
         }
     }

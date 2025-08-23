@@ -78,25 +78,53 @@ struct OnboardingFlowView: View {
             
             .navigationDestination(for: OnboardingStep.self) { step in
                 switch step {
-                case .journeyStatus: // THIS IS THE FIRST QUESTION
+                case .journeyStatus:
                      OnboardingSingleSelectionView(
                         title: "Ready to feel like you again?",
                         subtitle: "Where are you with your GLP-1 journey?",
                         selection: $viewModel.journeyStatus,
                         nextStep: .medication,
                         progress: 0.1,
+                        // By adding `options:`, you tell Swift exactly which initializer to use.
                         options: [
                             (title: "I'm already on a GLP-1", iconName: "sparkles"),
                             (title: "I'm about to start a GLP-1", iconName: "play.fill")
                         ]
                      )
+
                 case .medication:
-                     OnboardingSingleSelectionView(
+                    // Using the simple convenience initializer for String selection
+                    OnboardingSingleSelectionView(
                         title: "Which medication?",
                         selection: $viewModel.medication,
-                        nextStep: .dose, progress: 0.2,
-                        options: ["Zepbound®", "Other"]
-                     )
+                        nextStep: .dose,
+                        progress: 0.2,
+                        options: ["Zepbound®", "Wegovy®", "Ozempic®"],
+                        customInputEnabled: true // Allow custom medication entry
+                    )
+
+                case .dose:
+                    // Using the full generic initializer for Double selection
+                    OnboardingSingleSelectionView(
+                        title: "What's your current dose?",
+                        selection: $viewModel.dose, // Binds to the Double? property
+                        nextStep: .activity,
+                        progress: 0.4,
+                        options: [
+                            (title: "0.25mg", value: 0.25),
+                            (title: "0.5mg", value: 0.5),
+                            (title: "1.0mg", value: 1.0),
+                            (title: "1.7mg", value: 1.7),
+                            (title: "2.4mg", value: 2.4)
+                        ],
+                        valueToString: { dose in // How to display a Double
+                            return "\(dose)mg"
+                        },
+                        stringToValue: { text in // How to parse user text
+                            return Double(text)
+                        }
+                    )
+
                 default:
                     VStack(spacing: 16) {
                         Text("Final Step")
