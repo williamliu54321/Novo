@@ -17,6 +17,9 @@ struct OnboardingSingleSelectionView<SelectionValue: Hashable>: View {
     
     // --- Closures for Customization and Conversion ---
     private let customButtonTitle: String?
+    private let customModalTitle: String?
+    private let customModalPlaceholder: String?
+    private let customModalOptions: [String]
     private let valueToString: (SelectionValue) -> String     // Formats a value for display (e.g., 0.25 -> "0.25mg")
     private let stringToValue: ((String) -> SelectionValue?)? // Converts popup text to a value (e.g., "0.25" -> 0.25)
     
@@ -30,7 +33,10 @@ struct OnboardingSingleSelectionView<SelectionValue: Hashable>: View {
         nextStep: OnboardingStep,
         progress: Double,
         options: [(title: String, value: SelectionValue)],
-        customButtonTitle: String? = "Custom",
+        customButtonTitle: String? = "Custom / Other",
+        customModalTitle: String? = "Enter Custom Value",
+        customModalPlaceholder: String? = "Enter value",
+        customModalOptions: [String] = [],
         valueToString: @escaping (SelectionValue) -> String,
         stringToValue: ((String) -> SelectionValue?)? = nil
     ) {
@@ -41,6 +47,9 @@ struct OnboardingSingleSelectionView<SelectionValue: Hashable>: View {
         self.progress = progress
         self.options = options
         self.customButtonTitle = customButtonTitle
+        self.customModalTitle = customModalTitle
+        self.customModalPlaceholder = customModalPlaceholder
+        self.customModalOptions = customModalOptions
         self.valueToString = valueToString
         self.stringToValue = stringToValue
     }
@@ -109,10 +118,10 @@ struct OnboardingSingleSelectionView<SelectionValue: Hashable>: View {
         .sheet(isPresented: $showCustomInputSheet) {
             // The popup view itself remains simple.
             CustomValueInputView(
-                title: "Enter Custom Value",
-                placeholder: "Enter value",
+                title: customModalTitle ?? "Enter Custom Value",
+                placeholder: customModalPlaceholder ?? "Enter value",
                 keyboardType: .default,
-                additionalOptions: [],
+                additionalOptions: customModalOptions,
                 onSave: { textInput in
                     // Use the conversion closure to turn the String into our SelectionValue.
                     if let value = stringToValue?(textInput) {
@@ -139,7 +148,10 @@ extension OnboardingSingleSelectionView where SelectionValue == String {
         nextStep: OnboardingStep,
         progress: Double,
         options: [String],
-        customInputEnabled: Bool = false
+        customInputEnabled: Bool = false,
+        customModalTitle: String? = nil,
+        customModalPlaceholder: String? = nil,
+        customModalOptions: [String] = []
     ) {
         self.init(
             title: title,
@@ -148,7 +160,10 @@ extension OnboardingSingleSelectionView where SelectionValue == String {
             nextStep: nextStep,
             progress: progress,
             options: options.map { (title: $0, value: $0) }, // Title and value are the same
-            customButtonTitle: customInputEnabled ? "Custom" : nil,
+            customButtonTitle: customInputEnabled ? "Custom / Other" : nil,
+            customModalTitle: customModalTitle,
+            customModalPlaceholder: customModalPlaceholder,
+            customModalOptions: customModalOptions,
             valueToString: { $0 },      // A String is already a string
             stringToValue: { $0 }       // A String is already a string
         )

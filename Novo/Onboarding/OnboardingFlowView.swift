@@ -91,18 +91,36 @@ struct OnboardingFlowView: View {
                 case .medication:
                     // Using the simple convenience initializer for String selection
                     OnboardingSingleSelectionView(
-                        title: "Which medication?",
+                        title: "Which GLP-1 medication do you plan to use?",
+                        subtitle: "If you're not sure, pick your best guess — you can always change it later.",
                         selection: $viewModel.medication,
                         nextStep: .dose,
                         progress: 0.2,
-                        options: ["Zepbound®", "Wegovy®", "Ozempic®"],
-                        customInputEnabled: true // Allow custom medication entry
+                        options: [
+                            "Mounjaro®",
+                            "Ozempic®", 
+                            "Wegovy®",
+                            "Trulicity®",
+                            "Compounded Semaglutide",
+                            "Compounded Tirzepatide"
+                        ],
+                        customInputEnabled: true, // Allow custom medication entry
+                        customModalTitle: "Medication",
+                        customModalPlaceholder: "Enter Missing Medication",
+                        customModalOptions: [
+                            "Saxenda®",
+                            "Rybelsus®", 
+                            "Victoza®",
+                            "Byetta®",
+                            "Adlyxin®"
+                        ]
                     )
 
                 case .dose:
                     // Using the full generic initializer for Double selection
                     OnboardingSingleSelectionView(
-                        title: "What's your current dose?",
+                        title: "Do you know your recommended starting dose?",
+                        subtitle: "It's okay if you're not sure!",
                         selection: $viewModel.dose, // Binds to the Double? property
                         nextStep: .activity,
                         progress: 0.4,
@@ -110,14 +128,31 @@ struct OnboardingFlowView: View {
                             (title: "0.25mg", value: 0.25),
                             (title: "0.5mg", value: 0.5),
                             (title: "1.0mg", value: 1.0),
-                            (title: "1.7mg", value: 1.7),
-                            (title: "2.4mg", value: 2.4)
+                            (title: "2.5mg", value: 2.5),
+                            (title: "5.0mg", value: 5.0),
+                            (title: "7.5mg", value: 7.5),
+                            (title: "10.0mg", value: 10.0)
+                        ],
+                        customModalTitle: "Dosage",
+                        customModalPlaceholder: "Enter Custom Dosage",
+                        customModalOptions: [
+                            "0.125mg",
+                            "0.7mg",
+                            "1.7mg",
+                            "2.0mg",
+                            "2.4mg"
                         ],
                         valueToString: { dose in // How to display a Double
-                            return "\(dose)mg"
+                            let formatter = NumberFormatter()
+                            formatter.minimumFractionDigits = 0
+                            formatter.maximumFractionDigits = 3
+                            let numString = formatter.string(from: NSNumber(value: dose)) ?? "\(dose)"
+                            return "\(numString)mg"
                         },
                         stringToValue: { text in // How to parse user text
-                            return Double(text)
+                            // Remove "mg" suffix if present and convert to Double
+                            let cleanText = text.replacingOccurrences(of: "mg", with: "").trimmingCharacters(in: .whitespaces)
+                            return Double(cleanText)
                         }
                     )
 
