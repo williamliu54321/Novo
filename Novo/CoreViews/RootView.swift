@@ -1,32 +1,23 @@
-//
-//  RootView.swift
-//  Novo
-//
-//  Created by William Liu on 2025-08-20.
-//
-
-
+// RootView.swift
 import SwiftUI
-import Superwall // <-- Import Superwall
+import SuperwallKit
 
-// This is your main routing view. It decides what the user sees upon launch.
 struct RootView: View {
-    // @AppStorage is a property wrapper that reads and writes from UserDefaults.
-    // It's the perfect tool for persisting simple state like a "first launch" flag.
-    // We give it a unique key and a default value of `false`.
-    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding: Bool = false
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
 
     var body: some View {
-        // The core logic of the router:
-        // If the user has completed onboarding, show the main app.
         if hasCompletedOnboarding {
             MainAppView()
         } else {
-            // Otherwise, show the onboarding flow.
-            // We provide the `onComplete` callback here. This is the code
-            // that will be executed when the OnboardingFlowView says it's done.
             OnboardingFlowView {
-                self.hasCompletedOnboarding = true
+                // When onboarding completes, call your Superwall placement.
+                // In the dashboard, set the paywall used by "onboarding_complete"
+                // to Feature Gating: Gated. Then this closure will run ONLY on
+                // successful purchase or restore.
+                Superwall.shared.register(placement: "campaign_trigger") {
+                    // ⬇️ Fires after purchase/restore; move user into the app.
+                    hasCompletedOnboarding = true
+                }
             }
         }
     }

@@ -23,8 +23,11 @@
 		EF5880BF2E56EA95007A97D1 /* OnboardingJourneyStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5880BE2E56EA95007A97D1 /* OnboardingJourneyStartView.swift */; };
 		EF5880C12E56EC2E007A97D1 /* OnboardingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5880C02E56EC2E007A97D1 /* OnboardingButton.swift */; };
 		EF5880C32E56EC39007A97D1 /* OnboardingSingleSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5880C22E56EC39007A97D1 /* OnboardingSingleSelectionView.swift */; };
-		EF5880C72E56F30F007A97D1 /* OnboardingScreenLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5880C62E56F30F007A97D1 /* OnboardingScreenLayout.swift */; };
 		EF5880D12E5847C9007A97D1 /* OnboardingIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5880D02E5847C9007A97D1 /* OnboardingIntroView.swift */; };
+		EF5880D42E5958A8007A97D1 /* SuperwallKit in Frameworks */ = {isa = PBXBuildFile; productRef = EF5880D32E5958A8007A97D1 /* SuperwallKit */; };
+		EF5880D82E59705C007A97D1 /* StoreKit.storekit in Resources */ = {isa = PBXBuildFile; fileRef = EF5880D72E59705C007A97D1 /* StoreKit.storekit */; };
+		EF5880D92E59705C007A97D1 /* StoreKit.storekit in Resources */ = {isa = PBXBuildFile; fileRef = EF5880D72E59705C007A97D1 /* StoreKit.storekit */; };
+		EF5880DB2E59741E007A97D1 /* CustomValueInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5880DA2E59741E007A97D1 /* CustomValueInputView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,8 +66,9 @@
 		EF5880BE2E56EA95007A97D1 /* OnboardingJourneyStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingJourneyStartView.swift; sourceTree = "<group>"; };
 		EF5880C02E56EC2E007A97D1 /* OnboardingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingButton.swift; sourceTree = "<group>"; };
 		EF5880C22E56EC39007A97D1 /* OnboardingSingleSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSingleSelectionView.swift; sourceTree = "<group>"; };
-		EF5880C62E56F30F007A97D1 /* OnboardingScreenLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreenLayout.swift; sourceTree = "<group>"; };
 		EF5880D02E5847C9007A97D1 /* OnboardingIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingIntroView.swift; sourceTree = "<group>"; };
+		EF5880D72E59705C007A97D1 /* StoreKit.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = StoreKit.storekit; sourceTree = "<group>"; };
+		EF5880DA2E59741E007A97D1 /* CustomValueInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomValueInputView.swift; sourceTree = "<group>"; };
 		EF822C5C2E4C0E7F002D1759 /* Novo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Novo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF822C702E4C0E80002D1759 /* NovoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NovoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF822C7A2E4C0E80002D1759 /* NovoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NovoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF5880D42E5958A8007A97D1 /* SuperwallKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,8 +130,8 @@
 		EF5880BB2E56EA7B007A97D1 /* UI Components */ = {
 			isa = PBXGroup;
 			children = (
+				EF5880DA2E59741E007A97D1 /* CustomValueInputView.swift */,
 				EF5880C22E56EC39007A97D1 /* OnboardingSingleSelectionView.swift */,
-				EF5880C62E56F30F007A97D1 /* OnboardingScreenLayout.swift */,
 				EF5880C02E56EC2E007A97D1 /* OnboardingButton.swift */,
 				EF5880B92E56E9C9007A97D1 /* OnboardingSelectionButton.swift */,
 				EF5880BC2E56EA8C007A97D1 /* OnboardingHeaderView.swift */,
@@ -170,6 +175,7 @@
 		EF822C532E4C0E7F002D1759 = {
 			isa = PBXGroup;
 			children = (
+				EF5880D72E59705C007A97D1 /* StoreKit.storekit */,
 				EF587F722E4D109F007A97D1 /* Novo */,
 				EF822C732E4C0E80002D1759 /* NovoTests */,
 				EF822C7D2E4C0E80002D1759 /* NovoUITests */,
@@ -204,6 +210,7 @@
 			);
 			name = Novo;
 			packageProductDependencies = (
+				EF5880D32E5958A8007A97D1 /* SuperwallKit */,
 			);
 			productName = Novo;
 			productReference = EF822C5C2E4C0E7F002D1759 /* Novo.app */;
@@ -287,6 +294,9 @@
 			);
 			mainGroup = EF822C532E4C0E7F002D1759;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				EF5880D22E5958A8007A97D1 /* XCRemoteSwiftPackageReference "Superwall-iOS" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EF822C5D2E4C0E7F002D1759 /* Products */;
 			projectDirPath = "";
@@ -305,6 +315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF587F782E4D109F007A97D1 /* Assets.xcassets in Resources */,
+				EF5880D92E59705C007A97D1 /* StoreKit.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +323,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF5880D82E59705C007A97D1 /* StoreKit.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,10 +349,10 @@
 				EF587F752E4D109F007A97D1 /* NovoApp.swift in Sources */,
 				EF587F7F2E4D1B15007A97D1 /* ContentView.swift in Sources */,
 				EF5880B42E56E24D007A97D1 /* RootView.swift in Sources */,
-				EF5880C72E56F30F007A97D1 /* OnboardingScreenLayout.swift in Sources */,
 				EF5880B22E56E113007A97D1 /* MainAppView.swift in Sources */,
 				EF5880AC2E56E0ED007A97D1 /* QuestionNameView.swift in Sources */,
 				EF5880BD2E56EA8C007A97D1 /* OnboardingHeaderView.swift in Sources */,
+				EF5880DB2E59741E007A97D1 /* CustomValueInputView.swift in Sources */,
 				EF5880BA2E56E9C9007A97D1 /* OnboardingSelectionButton.swift in Sources */,
 				EF5880BF2E56EA95007A97D1 /* OnboardingJourneyStartView.swift in Sources */,
 				EF5880D12E5847C9007A97D1 /* OnboardingIntroView.swift in Sources */,
@@ -705,6 +717,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EF5880D22E5958A8007A97D1 /* XCRemoteSwiftPackageReference "Superwall-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/superwall/Superwall-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EF5880D32E5958A8007A97D1 /* SuperwallKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EF5880D22E5958A8007A97D1 /* XCRemoteSwiftPackageReference "Superwall-iOS" */;
+			productName = SuperwallKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		EF587F6E2E4D109F007A97D1 /* Novo.xcdatamodeld */ = {

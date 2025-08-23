@@ -98,7 +98,23 @@ struct OnboardingFlowView: View {
                         options: ["Zepbound®", "Other"]
                      )
                 default:
-                    Text("Final Step").onDisappear(perform: handleCompletion)
+                    VStack(spacing: 16) {
+                        Text("Final Step")
+                            .font(.title).bold()
+                        Button {
+                            handleCompletion()   // <-- only runs when user taps Continue
+                        } label: {
+                            Text("Continue")
+                                .font(.headline).bold()
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.black)
+                                .foregroundColor(.white)
+                                .cornerRadius(12)
+                        }
+                        .padding(.horizontal, 20)
+                    }
+                    .padding(.top, 24)
                 }
             }
         }
