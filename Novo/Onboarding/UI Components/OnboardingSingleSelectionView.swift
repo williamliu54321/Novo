@@ -14,13 +14,16 @@ struct OnboardingSingleSelectionView: View {
     @Binding private var selection: String?
     private let nextStep: OnboardingStep
     private let progress: Double
-    private let customInputTitle: String
-
-    // State for managing the custom input popup
-    @State private var showCustomInputSheet = false
-    @State private var customValueText = ""
     
-    // Initializer for simple [String] options
+    // --- NEW: Generalized properties to configure the custom popup ---
+    private let customSheetTitle: String
+    private let customSheetPlaceholder: String
+    private let customSheetKeyboardType: UIKeyboardType
+    private let customSheetOptions: [String]
+
+    @State private var showCustomInputSheet = false
+    
+    // Updated Initializer for simple [String] options
     init(
         title: String,
         subtitle: String? = nil,
@@ -28,7 +31,10 @@ struct OnboardingSingleSelectionView: View {
         nextStep: OnboardingStep,
         progress: Double,
         options: [String],
-        customInputTitle: String = "Enter Custom Value"
+        customSheetTitle: String = "Enter Custom Value",
+        customSheetPlaceholder: String = "Type here...",
+        customSheetKeyboardType: UIKeyboardType = .default,
+        customSheetOptions: [String] = []
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -36,10 +42,13 @@ struct OnboardingSingleSelectionView: View {
         self.nextStep = nextStep
         self.progress = progress
         self.options = options.map { (title: $0, iconName: nil) }
-        self.customInputTitle = customInputTitle
+        self.customSheetTitle = customSheetTitle
+        self.customSheetPlaceholder = customSheetPlaceholder
+        self.customSheetKeyboardType = customSheetKeyboardType
+        self.customSheetOptions = customSheetOptions
     }
 
-    // Initializer for options with icons
+    // Updated Initializer for options with icons
     init(
         title: String,
         subtitle: String? = nil,
@@ -47,7 +56,10 @@ struct OnboardingSingleSelectionView: View {
         nextStep: OnboardingStep,
         progress: Double,
         options: [(title: String, iconName: String?)],
-        customInputTitle: String = "Enter Custom Value"
+        customSheetTitle: String = "Enter Custom Value",
+        customSheetPlaceholder: String = "Type here...",
+        customSheetKeyboardType: UIKeyboardType = .default,
+        customSheetOptions: [String] = []
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -55,7 +67,10 @@ struct OnboardingSingleSelectionView: View {
         self.nextStep = nextStep
         self.progress = progress
         self.options = options
-        self.customInputTitle = customInputTitle
+        self.customSheetTitle = customSheetTitle
+        self.customSheetPlaceholder = customSheetPlaceholder
+        self.customSheetKeyboardType = customSheetKeyboardType
+        self.customSheetOptions = customSheetOptions
     }
 
     var body: some View {
@@ -71,21 +86,16 @@ struct OnboardingSingleSelectionView: View {
             
             ScrollView {
                 VStack(spacing: 12) {
-                    // This special button appears ONLY if a custom value has been entered.
-                    // It shows the user's custom choice and allows them to edit it.
                     if let selection = selection, !isPredefined(option: selection) {
                         OnboardingSelectionButton(
-                            iconName: nil, // Custom values don't have icons
+                            iconName: nil,
                             title: selection,
-                            isSelected: true // It's always selected when it's visible
+                            isSelected: true
                         ) {
-                            // Tapping the custom value button re-opens the popup to edit.
-                            self.customValueText = selection
-                            self.showCustomInputSheet = true
+                            showCustomInputSheet = true
                         }
                     }
                     
-                    // Loop through the predefined, hardcoded options.
                     ForEach(options, id: \.title) { option in
                         OnboardingSelectionButton(
                             iconName: option.iconName,
@@ -115,62 +125,59 @@ struct OnboardingSingleSelectionView: View {
         }
         .navigationBarBackButtonHidden()
         .sheet(isPresented: $showCustomInputSheet) {
+            // Present the new, generic custom input view.
             CustomValueInputView(
-                title: customInputTitle,
-                text: $customValueText,
-                onSave: {
-                    // When the user saves, update the main selection and dismiss the sheet.
-                    self.selection = customValueText
-                    self.showCustomInputSheet = false
+                title: customSheetTitle,
+                placeholder: customSheetPlaceholder,
+                keyboardType: customSheetKeyboardType,
+                additionalOptions: customSheetOptions,
+                onSave: { selectedValue in
+                    self.selection = selectedValue
                 }
             )
         }
     }
 
-    /// Handles the logic for tapping any button.
     private func handleSelection(for optionTitle: String) {
-        if optionTitle.lowercased() == "custom" {
-            // If the user taps "Custom", prepare the sheet and show it.
-            // If a custom value was already entered, pre-fill the text field.
-            customValueText = (selection != nil && !isPredefined(option: selection!)) ? selection! : ""
+        let customKeywords: Set<String> = ["custom", "other"]
+        
+        if customKeywords.contains(optionTitle.lowercased()) {
             showCustomInputSheet = true
         } else {
-            // For any normal option, just update the selection.
             selection = optionTitle
         }
     }
     
-    /// Checks if the selected value is one of the predefined options (excluding "Custom").
     private func isPredefined(option: String) -> Bool {
         return options.map(\.title).contains(option)
     }
 }
 
 #Preview {
-    // A simple wrapper view is the best practice for previewing components with bindings.
     struct PreviewWrapper: View {
-        // This @State variable will be passed as a Binding to the component,
-        // allowing for interactive previews. We start with `nil` for no selection.
         @State private var selection: String? = nil
 
         var body: some View {
-            // The component must be inside a NavigationStack for its NavigationLink to work.
             NavigationStack {
+                // --- EXAMPLE: Configuring for a Dosage Question ---
                 OnboardingSingleSelectionView(
                     title: "What's your current dose?",
-                    subtitle: "Select one of the options below to continue.",
+                    subtitle: "Select one of the options below.",
                     selection: $selection,
-                    nextStep: .activity, // A dummy value for the preview
+                    nextStep: .activity,
                     progress: 0.4,
-                    options: ["0.25 mg", "0.5 mg", "1.0 mg", "1.7 mg", "2.4 mg", "Custom"],
-                    customInputTitle: "Enter Custom Dose"
+                    // Main options shown on the screen
+                    options: ["0.25mg", "0.5mg", "1.0mg", "2.5mg", "5.0mg", "Other"],
+                    // Configuration for the generic popup sheet
+                    customSheetTitle: "Dosage",
+                    customSheetPlaceholder: "Enter Custom Dosage",
+                    customSheetKeyboardType: .decimalPad,
+                    customSheetOptions: ["0.125mg", "0.7mg", "1.7mg", "2.0mg", "2.4mg"]
                 )
-                // Provide a dummy viewModel, as the view expects one in its environment.
                 .environmentObject(OnboardingViewModel())
             }
         }
     }
     
-    // Return the wrapper view to be displayed in the Xcode canvas.
     return PreviewWrapper()
 }

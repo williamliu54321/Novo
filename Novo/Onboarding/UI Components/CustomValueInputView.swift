@@ -1,30 +1,29 @@
-// In CustomDosageInputView.swift
+// In CustomValueInputView.swift
 
 import SwiftUI
 
-/// A popup sheet that matches the design for entering a custom dosage.
-struct CustomDosageInputView: View {
-    // A list of extra, less common options to show in the sheet.
+/// A generalized, reusable popup sheet for entering a custom text value.
+/// It can be configured with a title, placeholder, keyboard type, and additional options.
+struct CustomValueInputView: View {
+    // --- Configuration Properties (passed from parent) ---
+    let title: String
+    let placeholder: String
+    let keyboardType: UIKeyboardType
     let additionalOptions: [String]
-    
-    // The callback to send the final selected value back to the parent.
     let onSave: (String) -> Void
     
-    // Local state for the text field.
+    // --- Internal State ---
     @State private var customText = ""
-    
-    // For programmatic dismissal.
     @Environment(\.dismiss) private var dismiss
-    
     @FocusState private var isTextFieldFocused: Bool
     
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 0) {
-                // --- 1. Custom Text Input Section ---
+                // Custom Text Input Section
                 HStack {
-                    TextField("Enter Custom Dosage", text: $customText)
-                        .keyboardType(.decimalPad)
+                    TextField(placeholder, text: $customText)
+                        .keyboardType(keyboardType)
                         .submitLabel(.done)
                     
                     Button("Add") {
@@ -44,7 +43,7 @@ struct CustomDosageInputView: View {
                 .cornerRadius(10)
                 .padding()
 
-                // --- 2. List of Additional Options ---
+                // List of Additional Options
                 List(additionalOptions, id: \.self) { option in
                     Button(action: {
                         saveAndDismiss(value: option)
@@ -52,22 +51,22 @@ struct CustomDosageInputView: View {
                         Text(option)
                             .foregroundColor(.primary)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(Rectangle())
                     }
+                    .buttonStyle(.plain)
                     .listRowInsets(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
                 }
                 .listStyle(.plain)
             }
-            .navigationTitle("Dosage")
+            .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // The "Save" button in the top right.
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
                         if !customText.isEmpty {
                             saveAndDismiss(value: customText)
                         }
                     }
-                    // The Save button is only active if the user has typed something.
                     .disabled(customText.isEmpty)
                 }
             }
@@ -77,9 +76,8 @@ struct CustomDosageInputView: View {
         }
     }
     
-    /// A helper function to centralize the action of saving and dismissing.
     private func saveAndDismiss(value: String) {
-        onSave(value) // Call the parent's callback
-        dismiss()     // Dismiss the sheet
+        onSave(value)
+        dismiss()
     }
 }
