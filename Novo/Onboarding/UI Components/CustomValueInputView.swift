@@ -1,10 +1,9 @@
 import SwiftUI
 
+// This is the content of our popup sheet.
 struct CustomValueInputView: View {
-    // A binding to the text the user is typing.
-    @Binding var customValue: String
-    
-    // A function to call when the user taps "Save".
+    let title: String
+    @Binding var text: String
     let onSave: () -> Void
     
     @FocusState private var isTextFieldFocused: Bool
@@ -12,7 +11,7 @@ struct CustomValueInputView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                TextField("Enter custom value", text: $customValue)
+                TextField("Enter value", text: $text)
                     .keyboardType(.decimalPad) // Good for dose numbers
                     .padding()
                     .background(Color(.systemGray6))
@@ -24,20 +23,18 @@ struct CustomValueInputView: View {
                         .font(.headline).bold()
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(customValue.isEmpty ? Color.gray : Color.black)
+                        .background(text.isEmpty ? Color.gray : Color.black)
                         .foregroundColor(.white)
                         .cornerRadius(12)
                 }
-                .disabled(customValue.isEmpty)
+                .disabled(text.isEmpty)
                 
                 Spacer()
             }
             .padding()
-            .navigationTitle("Enter Custom Dose")
+            .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                isTextFieldFocused = true
-            }
+            .onAppear { isTextFieldFocused = true }
         }
     }
 }
