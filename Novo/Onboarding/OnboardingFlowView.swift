@@ -85,11 +85,7 @@ struct OnboardingFlowView: View {
                         selection: $viewModel.journeyStatus,
                         nextStep: .medication,
                         progress: 0.1,
-                        // By adding `options:`, you tell Swift exactly which initializer to use.
-                        options: [
-                            (title: "I'm already on a GLP-1", iconName: "sparkles"),
-                            (title: "I'm about to start a GLP-1", iconName: "play.fill")
-                        ]
+                        options: ["I'm already on a GLP-1", "I'm about to start a GLP-1"]
                      )
 
                 case .medication:

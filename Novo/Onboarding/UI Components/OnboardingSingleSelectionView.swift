@@ -110,6 +110,9 @@ struct OnboardingSingleSelectionView<SelectionValue: Hashable>: View {
             // The popup view itself remains simple.
             CustomValueInputView(
                 title: "Enter Custom Value",
+                placeholder: "Enter value",
+                keyboardType: .default,
+                additionalOptions: [],
                 onSave: { textInput in
                     // Use the conversion closure to turn the String into our SelectionValue.
                     if let value = stringToValue?(textInput) {
