@@ -32,6 +32,7 @@ class OnboardingViewModel: ObservableObject {
     @Published var dreamWeight: Double? // Stored in kg  
     @Published var height: Double? // Stored in cm
     @Published var useMetric: Bool = Locale.current.usesMetricSystem
+    @Published var weeklyWeightGoal: Double? // Stored in kg per week
 
     @Published var name: String = ""
     @Published var fitnessGoal: FitnessGoal = .loseWeight

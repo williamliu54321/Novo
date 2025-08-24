@@ -5,7 +5,7 @@ import Foundation
 enum OnboardingStep: Hashable {
     case journeyStatus
     case medication, dose, shotFrequency, benefits, gender
-    case name, goal, dateOfBirth, dreamWeight, heightWeight, activity, terms
+    case name, goal, dateOfBirth, heightWeight, dreamWeight, summary, goalPace, activity, terms
 }
 
 struct OnboardingPageInfo: Identifiable {
@@ -208,18 +208,30 @@ struct OnboardingFlowView: View {
                 case .dateOfBirth:
                     // Birthday selection with wheel picker
                     BirthdayView {
-                        navigationPath.append(.dreamWeight)
-                    }
-
-                case .dreamWeight:
-                    // Dream weight selection with interactive picker
-                    DreamWeightView {
                         navigationPath.append(.heightWeight)
                     }
 
                 case .heightWeight:
                     // Height and current weight selection
                     HeightWeightView {
+                        navigationPath.append(.dreamWeight)
+                    }
+
+                case .dreamWeight:
+                    // Dream weight selection with interactive picker
+                    DreamWeightView {
+                        navigationPath.append(.summary)
+                    }
+                    
+                case .summary:
+                    // Summary view with weight loss message
+                    GoalSummaryView {
+                        navigationPath.append(.goalPace)
+                    }
+                    
+                case .goalPace:
+                    // Goal pace selection
+                    GoalPaceView {
                         navigationPath.append(.activity)
                     }
 
@@ -485,7 +497,7 @@ private struct DreamWeightView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            OnboardingHeaderView(progress: 0.85)
+            OnboardingHeaderView(progress: 0.88)
             
             VStack(alignment: .leading, spacing: 16) {
                 Text("What's Your Dream Weight?")
@@ -637,7 +649,7 @@ private struct HeightWeightView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            OnboardingHeaderView(progress: 0.9)
+            OnboardingHeaderView(progress: 0.85)
             
             VStack(alignment: .leading, spacing: 16) {
                 Text("Your Height & Weight")
@@ -658,40 +670,30 @@ private struct HeightWeightView: View {
                     Text("Height")
                         .font(.headline)
                     
-                    VStack(spacing: 8) {
-                        Text(formatHeight(selectedHeight, isMetric: viewModel.useMetric))
-                            .font(.title2)
-                            .bold()
-                        
-                        Picker("Height", selection: $selectedHeight) {
-                            ForEach(getHeightValues(), id: \.self) { height in
-                                Text(formatHeight(height, isMetric: viewModel.useMetric))
-                                    .tag(height)
-                            }
+                    Picker("Height", selection: $selectedHeight) {
+                        ForEach(getHeightValues(), id: \.self) { height in
+                            Text(formatHeight(height, isMetric: viewModel.useMetric))
+                                .tag(height)
                         }
-                        .pickerStyle(.wheel)
-                        .frame(height: 120)
                     }
+                    .pickerStyle(.wheel)
+                    .frame(height: 150)
+                    .clipped()
                 }
                 
                 VStack(spacing: 16) {
                     Text("Weight")
                         .font(.headline)
                     
-                    VStack(spacing: 8) {
-                        Text(formatWeight(selectedWeight, isMetric: viewModel.useMetric))
-                            .font(.title2)
-                            .bold()
-                        
-                        Picker("Weight", selection: $selectedWeight) {
-                            ForEach(getWeightValues(), id: \.self) { weight in
-                                Text(formatWeight(weight, isMetric: viewModel.useMetric))
-                                    .tag(weight)
-                            }
+                    Picker("Weight", selection: $selectedWeight) {
+                        ForEach(getWeightValues(), id: \.self) { weight in
+                            Text(formatWeight(weight, isMetric: viewModel.useMetric))
+                                .tag(weight)
                         }
-                        .pickerStyle(.wheel)
-                        .frame(height: 120)
                     }
+                    .pickerStyle(.wheel)
+                    .frame(height: 150)
+                    .clipped()
                 }
             }
             .padding(.horizontal)
@@ -794,6 +796,234 @@ private struct HeightWeightView: View {
         } else {
             return Array(stride(from: 66.0, through: 440.0, by: 0.1)) // lbs
         }
+    }
+}
+
+// MARK: - Goal Pace View
+
+private struct GoalPaceView: View {
+    @EnvironmentObject var viewModel: OnboardingViewModel
+    let onContinue: () -> Void
+    
+    @State private var weeklyChange: Double = 1.5 // Default to moderate pace (in lbs)
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            OnboardingHeaderView(progress: 0.93)
+            
+            VStack(alignment: .leading, spacing: 16) {
+                Text("How quickly do you want to reach your goal?")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding(.top)
+                
+                Text("(Don't worry - we'll help you stay healthy whatever pace you choose.)")
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.horizontal)
+            
+            Spacer()
+            
+            VStack(spacing: 30) {
+                // Estimated goal date
+                HStack {
+                    Image(systemName: "flag.checkered")
+                        .foregroundColor(.secondary)
+                    Text("Est. Goal Date")
+                        .foregroundColor(.secondary)
+                    Text(calculateGoalDate())
+                        .bold()
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(12)
+                
+                // Weekly change display
+                VStack(spacing: 8) {
+                    Text("Weekly Change:")
+                        .font(.headline)
+                    
+                    HStack(alignment: .bottom, spacing: 0) {
+                        Text(String(format: "%.1f", weeklyChange))
+                            .font(.system(size: 60, weight: .bold))
+                        Text("lbs")
+                            .font(.title2)
+                            .padding(.bottom, 10)
+                    }
+                }
+                
+                // Slider with icons
+                VStack(spacing: 20) {
+                    HStack {
+                        Image(systemName: "figure.walk")
+                            .font(.title2)
+                        
+                        Slider(value: $weeklyChange, in: 0.2...3.0, step: 0.1)
+                            .accentColor(sliderColor)
+                        
+                        Image(systemName: "rocket")
+                            .font(.title2)
+                    }
+                    .padding(.horizontal)
+                    
+                    HStack {
+                        Text("0.2 lbs")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        Spacer()
+                        Text("1.5 lbs")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        Spacer()
+                        Text("3 lbs")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.horizontal)
+                }
+                
+                // Dynamic message based on pace
+                Text(paceMessage)
+                    .font(.body)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal)
+                    .padding(.top, 20)
+            }
+            
+            Spacer()
+            
+            Button {
+                // Save the goal pace
+                viewModel.weeklyWeightGoal = weeklyChange * 0.453592 // Convert to kg for storage
+                onContinue()
+            } label: {
+                Text("Continue")
+                    .font(.headline)
+                    .bold()
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.black)
+                    .foregroundColor(.white)
+                    .cornerRadius(16)
+            }
+            .padding([.horizontal, .bottom])
+        }
+        .navigationBarBackButtonHidden()
+    }
+    
+    private var sliderColor: Color {
+        if weeklyChange < 0.8 {
+            return .green
+        } else if weeklyChange < 2.0 {
+            return .blue
+        } else {
+            return .purple
+        }
+    }
+    
+    private var paceMessage: String {
+        if weeklyChange < 0.5 {
+            return "This slower pace is gentle and sustainable for your journey."
+        } else if weeklyChange < 1.0 {
+            return "This steady pace balances progress with sustainability."
+        } else if weeklyChange < 2.0 {
+            return "This pace is ideal for long-term success."
+        } else {
+            return "This ambitious pace will require dedication but can deliver faster results."
+        }
+    }
+    
+    private func calculateGoalDate() -> String {
+        guard let currentWeight = viewModel.currentWeight,
+              let dreamWeight = viewModel.dreamWeight else {
+            return "Not set"
+        }
+        
+        let weightToLose = abs(currentWeight - dreamWeight) * 2.20462 // Convert kg difference to lbs
+        let weeksNeeded = weightToLose / weeklyChange
+        let goalDate = Calendar.current.date(byAdding: .weekOfYear, value: Int(weeksNeeded), to: Date()) ?? Date()
+        
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter.string(from: goalDate)
+    }
+}
+
+// MARK: - Goal Summary View
+
+private struct GoalSummaryView: View {
+    @EnvironmentObject var viewModel: OnboardingViewModel
+    let onContinue: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            OnboardingHeaderView(progress: 0.90)
+            
+            Spacer()
+            
+            VStack(spacing: 40) {
+                // App logo
+                HStack(spacing: 8) {
+                    Image(systemName: "bolt.fill")
+                        .foregroundColor(.blue)
+                        .font(.largeTitle)
+                    Text("Novo")
+                        .font(.largeTitle)
+                        .bold()
+                }
+                
+                // Weight loss message  
+                Group {
+                    Text("Losing ")
+                        .foregroundColor(.primary) +
+                    Text(String(format: "%.0f lbs", calculateWeightLoss()))
+                        .foregroundColor(.blue)
+                        .bold() +
+                    Text(" might feel overwhelming—but it's very realistic. Let's tackle it together.")
+                        .foregroundColor(.primary)
+                }
+                .font(.title2)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 30)
+                
+                // Success message
+                Text("Over 80% of Novo members see tangible progress in their first month—without the scary side effects they feared.")
+                    .font(.body)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal, 30)
+                    .padding(.top, 20)
+            }
+            
+            Spacer()
+            Spacer()
+            
+            Button {
+                onContinue()
+            } label: {
+                Text("Continue")
+                    .font(.headline)
+                    .bold()
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.black)
+                    .foregroundColor(.white)
+                    .cornerRadius(16)
+            }
+            .padding([.horizontal, .bottom])
+        }
+        .navigationBarBackButtonHidden()
+    }
+    
+    private func calculateWeightLoss() -> Double {
+        guard let currentWeight = viewModel.currentWeight,
+              let dreamWeight = viewModel.dreamWeight else {
+            return 0
+        }
+        
+        return abs(currentWeight - dreamWeight) * 2.20462 // Convert kg to lbs
     }
 }
 
