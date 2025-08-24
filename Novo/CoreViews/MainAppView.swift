@@ -32,13 +32,24 @@ struct MainAppView: View {
                         ProfileRow(label: "Date of Birth", value: userProfile.dateOfBirth?.formatted(date: .long, time: .omitted) ?? "Not Provided")
                     }
                     
-                    // --- Section 2: Survey Results ---
+                    // --- Section 2: GLP-1 Journey Information ---
+                    Section(header: Text("GLP-1 Journey")) {
+                        ProfileRow(label: "Journey Status", value: userProfile.journeyStatus ?? "Not specified")
+                        
+                        // Show medication name or user-friendly text
+                        ProfileRow(label: "Medication", value: userProfile.medication ?? "Not specified")
+                        
+                        // Show dose with "mg" suffix or user-friendly text
+                        ProfileRow(label: "Dose", value: formatDose(userProfile.dose))
+                    }
+                    
+                    // --- Section 3: Survey Results ---
                     Section(header: Text("Your Profile")) {
                         ProfileRow(label: "Fitness Goal", value: userProfile.fitnessGoal ?? "Not Provided")
                         ProfileRow(label: "Activity Level", value: userProfile.activityLevel ?? "Not Provided")
                     }
                     
-                    // --- Section 3: Account Status ---
+                    // --- Section 4: Account Status ---
                     Section(header: Text("Account")) {
                         // Use a ternary operator to convert the Boolean to a user-friendly string.
                         ProfileRow(label: "Agreed to Terms", value: userProfile.agreedToTerms ? "Yes" : "No")
@@ -57,6 +68,17 @@ struct MainAppView: View {
                 .navigationTitle("Dashboard")
             }
         }
+    }
+    
+    // Helper function to format dose values
+    private func formatDose(_ dose: NSNumber?) -> String {
+        guard let dose = dose else { return "Not specified" }
+        
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 3
+        let doseString = formatter.string(from: NSNumber(value: dose.doubleValue)) ?? "\(dose.doubleValue)"
+        return "\(doseString)mg"
     }
 }
 
@@ -94,6 +116,9 @@ struct MainAppView_Previews: PreviewProvider {
         previewProfile.dateOfBirth = Calendar.current.date(from: .init(year: 1992, month: 10, day: 23))
         previewProfile.fitnessGoal = "Gain Muscle"
         previewProfile.activityLevel = "Moderately Active"
+        previewProfile.journeyStatus = "I'm already on a GLP-1"
+        previewProfile.medication = "Ozempic®"
+        previewProfile.dose = NSNumber(value: 1.25)
         previewProfile.agreedToTerms = true
         previewProfile.onboardingCompletedDate = Date()
         

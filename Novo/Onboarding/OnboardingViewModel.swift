@@ -55,10 +55,19 @@ class OnboardingViewModel: ObservableObject {
         newUserProfile.journeyStatus = self.journeyStatus
         newUserProfile.onboardingCompletedDate = Date()
         
+        // Save medication - nil if "I haven't decided" is selected
+        if let medication = self.medication, medication != "I haven't decided" {
+            newUserProfile.medication = medication
+        } else {
+            newUserProfile.medication = nil
+        }
+        
         // --- 2. ADD THE SAVING LOGIC FOR THE DOSE ---
-        // Safely unwrap the optional Double and assign it.
-        if let dose = self.dose {
-            newUserProfile.dose = dose
+        // Save dose - nil if "Not sure yet" (-1.0) is selected
+        if let dose = self.dose, dose != -1.0 {
+            newUserProfile.dose = NSNumber(value: dose)
+        } else {
+            newUserProfile.dose = nil
         }
         
         do {

@@ -102,7 +102,8 @@ struct OnboardingFlowView: View {
                             "Wegovy®",
                             "Trulicity®",
                             "Compounded Semaglutide",
-                            "Compounded Tirzepatide"
+                            "Compounded Tirzepatide",
+                            "I haven't decided"
                         ],
                         customInputEnabled: true, // Allow custom medication entry
                         customModalTitle: "Medication",
@@ -131,7 +132,8 @@ struct OnboardingFlowView: View {
                             (title: "2.5mg", value: 2.5),
                             (title: "5.0mg", value: 5.0),
                             (title: "7.5mg", value: 7.5),
-                            (title: "10.0mg", value: 10.0)
+                            (title: "10.0mg", value: 10.0),
+                            (title: "Not sure yet", value: -1.0)
                         ],
                         customModalTitle: "Dosage",
                         customModalPlaceholder: "Enter Custom Dosage",
@@ -143,6 +145,7 @@ struct OnboardingFlowView: View {
                             "2.4mg"
                         ],
                         valueToString: { dose in // How to display a Double
+                            if dose == -1.0 { return "Not sure yet" }
                             let formatter = NumberFormatter()
                             formatter.minimumFractionDigits = 0
                             formatter.maximumFractionDigits = 3
