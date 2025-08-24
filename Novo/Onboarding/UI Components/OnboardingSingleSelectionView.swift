@@ -23,8 +23,9 @@ struct OnboardingSingleSelectionView<SelectionValue: Hashable>: View {
     private let valueToString: (SelectionValue) -> String     // Formats a value for display (e.g., 0.25 -> "0.25mg")
     private let stringToValue: ((String) -> SelectionValue?)? // Converts popup text to a value (e.g., "0.25" -> 0.25)
     
-    // State for managing the popup
+    // State for managing the popup and custom values
     @State private var showCustomInputSheet = false
+    @State private var customValue: SelectionValue? = nil
 
     init(
         title: String,
@@ -67,13 +68,13 @@ struct OnboardingSingleSelectionView<SelectionValue: Hashable>: View {
             
             ScrollView {
                 VStack(spacing: 12) {
-                    // Display a button for a custom-entered value if it exists.
-                    if let selection = selection, !isPredefined(value: selection) {
+                    // Display a button for a custom-entered value if one exists.
+                    if let customVal = customValue {
                         OnboardingSelectionButton(
-                            title: valueToString(selection), // Use the formatting closure
-                            isSelected: true
+                            title: valueToString(customVal), // Use the formatting closure
+                            isSelected: selection == customVal
                         ) {
-                            showCustomInputSheet = true
+                            self.selection = customVal
                         }
                     }
                     
@@ -115,6 +116,12 @@ struct OnboardingSingleSelectionView<SelectionValue: Hashable>: View {
             .padding([.horizontal, .bottom])
         }
         .navigationBarBackButtonHidden()
+        .onAppear {
+            // Initialize customValue if current selection is not predefined
+            if let currentSelection = selection, !isPredefined(value: currentSelection) {
+                customValue = currentSelection
+            }
+        }
         .sheet(isPresented: $showCustomInputSheet) {
             // The popup view itself remains simple.
             CustomValueInputView(
@@ -125,6 +132,7 @@ struct OnboardingSingleSelectionView<SelectionValue: Hashable>: View {
                 onSave: { textInput in
                     // Use the conversion closure to turn the String into our SelectionValue.
                     if let value = stringToValue?(textInput) {
+                        self.customValue = value
                         self.selection = value
                     }
                 }

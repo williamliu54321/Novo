@@ -32,7 +32,18 @@ struct MainAppView: View {
                         ProfileRow(label: "Date of Birth", value: userProfile.dateOfBirth?.formatted(date: .long, time: .omitted) ?? "Not Provided")
                     }
                     
-                    // --- Section 2: GLP-1 Journey Information ---
+                    // --- Section 2: Body Metrics ---
+                    Section(header: Text("Body Metrics")) {
+                        ProfileRow(label: "Height", value: formatHeight(userProfile.height, useMetric: userProfile.useMetric))
+                        
+                        ProfileRow(label: "Current Weight", value: formatWeight(userProfile.currentWeight, useMetric: userProfile.useMetric))
+                        
+                        ProfileRow(label: "Dream Weight", value: formatWeight(userProfile.dreamWeight, useMetric: userProfile.useMetric))
+                        
+                        ProfileRow(label: "Unit System", value: (userProfile.useMetric ?? true) ? "Metric" : "Imperial")
+                    }
+                    
+                    // --- Section 3: GLP-1 Journey Information ---
                     Section(header: Text("GLP-1 Journey")) {
                         ProfileRow(label: "Journey Status", value: userProfile.journeyStatus ?? "Not specified")
                         
@@ -41,15 +52,21 @@ struct MainAppView: View {
                         
                         // Show dose with "mg" suffix or user-friendly text
                         ProfileRow(label: "Dose", value: formatDose(userProfile.dose))
+                        
+                        // Show shot frequency
+                        ProfileRow(label: "Shot Frequency", value: formatShotFrequency(userProfile.shotFrequency))
+                        
+                        // Show gender
+                        ProfileRow(label: "Gender", value: userProfile.gender ?? "Not specified")
                     }
                     
-                    // --- Section 3: Survey Results ---
+                    // --- Section 4: Survey Results ---
                     Section(header: Text("Your Profile")) {
                         ProfileRow(label: "Fitness Goal", value: userProfile.fitnessGoal ?? "Not Provided")
                         ProfileRow(label: "Activity Level", value: userProfile.activityLevel ?? "Not Provided")
                     }
                     
-                    // --- Section 4: Account Status ---
+                    // --- Section 5: Account Status ---
                     Section(header: Text("Account")) {
                         // Use a ternary operator to convert the Boolean to a user-friendly string.
                         ProfileRow(label: "Agreed to Terms", value: userProfile.agreedToTerms ? "Yes" : "No")
@@ -79,6 +96,50 @@ struct MainAppView: View {
         formatter.maximumFractionDigits = 3
         let doseString = formatter.string(from: NSNumber(value: dose.doubleValue)) ?? "\(dose.doubleValue)"
         return "\(doseString)mg"
+    }
+    
+    // Helper function to format shot frequency values
+    private func formatShotFrequency(_ frequency: NSNumber?) -> String {
+        guard let frequency = frequency else { return "Not specified" }
+        
+        let days = frequency.intValue
+        if days == 1 {
+            return "Every day"
+        } else {
+            return "Every \(days) days"
+        }
+    }
+    
+    // Helper function to format height values
+    private func formatHeight(_ height: NSNumber?, useMetric: Bool?) -> String {
+        guard let height = height else { return "Not specified" }
+        
+        let heightValue = height.doubleValue
+        let isMetric = useMetric ?? true
+        
+        if isMetric {
+            return String(format: "%.0fcm", heightValue)
+        } else {
+            let totalInches = heightValue / 2.54 // Convert cm to inches
+            let feet = Int(totalInches / 12)
+            let inches = Int(totalInches.truncatingRemainder(dividingBy: 12))
+            return "\(feet)'\(inches)\""
+        }
+    }
+    
+    // Helper function to format weight values
+    private func formatWeight(_ weight: NSNumber?, useMetric: Bool?) -> String {
+        guard let weight = weight else { return "Not specified" }
+        
+        let weightValue = weight.doubleValue
+        let isMetric = useMetric ?? true
+        
+        if isMetric {
+            return String(format: "%.1fkg", weightValue)
+        } else {
+            let weightInLbs = weightValue * 2.20462 // Convert kg to lbs
+            return String(format: "%.1flbs", weightInLbs)
+        }
     }
 }
 
@@ -119,6 +180,12 @@ struct MainAppView_Previews: PreviewProvider {
         previewProfile.journeyStatus = "I'm already on a GLP-1"
         previewProfile.medication = "Ozempic®"
         previewProfile.dose = NSNumber(value: 1.25)
+        previewProfile.shotFrequency = NSNumber(value: 7)
+        previewProfile.gender = "Female"
+        previewProfile.height = NSNumber(value: 165.0) // 165cm
+        previewProfile.currentWeight = NSNumber(value: 70.0) // 70kg
+        previewProfile.dreamWeight = NSNumber(value: 65.0) // 65kg
+        previewProfile.useMetric = true
         previewProfile.agreedToTerms = true
         previewProfile.onboardingCompletedDate = Date()
         

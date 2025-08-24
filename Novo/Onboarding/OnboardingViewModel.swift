@@ -26,6 +26,12 @@ class OnboardingViewModel: ObservableObject {
     @Published var journeyStatus: String?
     @Published var medication: String?
     @Published var dose: Double? // <-- 1. ADD THE DOSE PROPERTY (as a Double)
+    @Published var shotFrequency: Int? // Number of days between shots
+    @Published var gender: String?
+    @Published var currentWeight: Double? // Stored in kg
+    @Published var dreamWeight: Double? // Stored in kg  
+    @Published var height: Double? // Stored in cm
+    @Published var useMetric: Bool = Locale.current.usesMetricSystem
 
     @Published var name: String = ""
     @Published var fitnessGoal: FitnessGoal = .loseWeight
@@ -53,13 +59,33 @@ class OnboardingViewModel: ObservableObject {
         newUserProfile.activityLevel = self.activityLevel.rawValue
         newUserProfile.agreedToTerms = self.hasAgreedToTerms
         newUserProfile.journeyStatus = self.journeyStatus
+        newUserProfile.gender = self.gender
+        newUserProfile.useMetric = self.useMetric
         newUserProfile.onboardingCompletedDate = Date()
+        
+        // Save weight and height data (stored in metric units)
+        if let currentWeight = self.currentWeight {
+            newUserProfile.currentWeight = NSNumber(value: currentWeight)
+        }
+        if let dreamWeight = self.dreamWeight {
+            newUserProfile.dreamWeight = NSNumber(value: dreamWeight)
+        }
+        if let height = self.height {
+            newUserProfile.height = NSNumber(value: height)
+        }
         
         // Save medication - nil if "I haven't decided" is selected
         if let medication = self.medication, medication != "I haven't decided" {
             newUserProfile.medication = medication
         } else {
             newUserProfile.medication = nil
+        }
+        
+        // Save shot frequency - nil if "Not sure" is selected
+        if let frequency = self.shotFrequency, frequency > 0 {
+            newUserProfile.shotFrequency = NSNumber(value: frequency)
+        } else {
+            newUserProfile.shotFrequency = nil
         }
         
         // --- 2. ADD THE SAVING LOGIC FOR THE DOSE ---
