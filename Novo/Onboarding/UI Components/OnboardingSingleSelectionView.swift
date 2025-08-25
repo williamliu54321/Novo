@@ -105,8 +105,9 @@ struct OnboardingSingleSelectionView<SelectionValue: Hashable>: View {
 
             NavigationLink(value: nextStep) {
                 Text("Continue")
-                    .font(.headline).fontWeight(.bold)
-                    .frame(maxWidth: .infinity, minHeight: 44)
+                    .font(.headline)
+                    .bold()
+                    .frame(maxWidth: .infinity)
                     .padding()
                     .background(selection == nil ? Color(uiColor: .systemGray3) : Color.black)
                     .foregroundColor(.white)

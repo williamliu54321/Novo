@@ -1,11 +1,13 @@
 import SwiftUI
 import UIKit // Needed for styling the page dots
 import Foundation
+import StoreKit
 
 enum OnboardingStep: Hashable {
     case journeyStatus
     case medication, dose, shotFrequency, benefits, gender
-    case name, goal, dateOfBirth, heightWeight, dreamWeight, summary, goalPace, activity, terms
+    case name, goal, dateOfBirth, heightWeight, dreamWeight, summary, goalPace
+    case glpEffectiveness, activity, toughestDayInfo, cravingsDay, sideEffects, rating, motivation, terms
 }
 
 struct OnboardingPageInfo: Identifiable {
@@ -232,10 +234,119 @@ struct OnboardingFlowView: View {
                 case .goalPace:
                     // Goal pace selection
                     GoalPaceView {
+                        navigationPath.append(.glpEffectiveness)
+                    }
+                    
+                case .glpEffectiveness:
+                    // GLP effectiveness informational screen
+                    GLPEffectivenessView {
                         navigationPath.append(.activity)
                     }
+                    
+                case .activity:
+                    // Activity level selection (daily routine)
+                    OnboardingSingleSelectionView(
+                        title: "Tell us a bit about your daily routine.",
+                        subtitle: nil,
+                        selection: $viewModel.activityLevelString,
+                        nextStep: .toughestDayInfo,
+                        progress: 0.95,
+                        options: [
+                            "Sedentary (mostly inactive, little exercise)",
+                            "Lightly Active (light daily activity and movement)",
+                            "Active (regular workouts or physical labor)",
+                            "Very Active (intense exercise or very physical job)"
+                        ]
+                    )
+                    
+                case .toughestDayInfo:
+                    // Toughest day informational screen
+                    ToughestDayView {
+                        navigationPath.append(.cravingsDay)
+                    }
+                    
+                case .cravingsDay:
+                    // Food cravings day selection
+                    OnboardingSingleSelectionView(
+                        title: "Which day does food noise and cravings hit hardest?",
+                        subtitle: "We'll time your GLP-1 dose so it works hardest when cravings—and food noise—are at their peak.",
+                        selection: $viewModel.toughestDay,
+                        nextStep: .sideEffects,
+                        progress: 0.97,
+                        options: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+                    )
+                    
+                case .sideEffects:
+                    // Side effects concern selection  
+                    OnboardingSingleSelectionView(
+                        title: "What side effects are you most concerned about?",
+                        subtitle: "Share what's on your mind — we'll tailor support to your needs.",
+                        selection: $viewModel.primarySideEffectConcern,
+                        nextStep: .motivation,
+                        progress: 0.98,
+                        options: [
+                            "Nausea",
+                            "Fatigue", 
+                            "Hair Loss",
+                            "Muscle Loss",
+                            "Constipation",
+                            "Bloating",
+                            "Sulfur Burps",
+                            "Heartburn",
+                            "Food Noise"
+                        ],
+                        customInputEnabled: true,
+                        customModalTitle: "Other",
+                        customModalPlaceholder: "Add your own side effects",
+                        customModalOptions: [
+                            "Migraine",
+                            "Diarrhea",
+                            "Injection Site Reaction",
+                            "Mood Swings",
+                            "Metallic Taste",
+                            "Stomach Pain",
+                            "Suppressed Appetite"
+                        ]
+                    )
 
-                default:
+                case .motivation:
+                    // Motivation slide 
+                    MotivationView {
+                        navigationPath.append(.rating)
+                    }
+
+                case .rating:
+                    // Rating slide with testimonials
+                    RatingView {
+                        navigationPath.append(.terms)
+                    }
+
+                case .name:
+                    // Name selection placeholder
+                    QuestionNameView()
+                    
+                case .goal:
+                    // Goal selection placeholder 
+                    VStack(spacing: 16) {
+                        Text("Goal Selection")
+                            .font(.title).bold()
+                        Button {
+                            navigationPath.append(.dateOfBirth)
+                        } label: {
+                            Text("Continue")
+                                .font(.headline).bold()
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.black)
+                                .foregroundColor(.white)
+                                .cornerRadius(16)
+                        }
+                        .padding(.horizontal, 20)
+                    }
+                    .padding(.top, 24)
+
+                case .terms:
+                    // Final step/terms
                     VStack(spacing: 16) {
                         Text("Final Step")
                             .font(.title).bold()
@@ -248,7 +359,7 @@ struct OnboardingFlowView: View {
                                 .padding()
                                 .background(Color.black)
                                 .foregroundColor(.white)
-                                .cornerRadius(12)
+                                .cornerRadius(16)
                         }
                         .padding(.horizontal, 20)
                     }
@@ -1027,6 +1138,470 @@ private struct GoalSummaryView: View {
     }
 }
 
+// MARK: - GLP Effectiveness View
+
+private struct GLPEffectivenessView: View {
+    let onContinue: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            OnboardingHeaderView(progress: 0.94)
+            
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    Text("Make GLP-1 Work for You—3x More Effectively")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding(.top)
+                        .padding(.horizontal)
+                    
+                    Spacer(minLength: 40)
+                    
+                    // Bar chart comparison
+                    VStack(spacing: 20) {
+                        HStack(spacing: 40) {
+                            VStack(spacing: 8) {
+                                Text("Without")
+                                    .font(.headline)
+                                
+                                ZStack(alignment: .bottom) {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color.gray.opacity(0.2))
+                                        .frame(width: 120, height: 200)
+                                    
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color.gray.opacity(0.3))
+                                        .frame(width: 120, height: 36) // 18% of 200
+                                }
+                                
+                                Text("18%")
+                                    .font(.title2)
+                                    .bold()
+                            }
+                            
+                            VStack(spacing: 8) {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "bolt.fill")
+                                        .foregroundColor(.blue)
+                                    Text("Novo")
+                                        .font(.headline)
+                                }
+                                
+                                ZStack(alignment: .bottom) {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color.blue.opacity(0.2))
+                                        .frame(width: 120, height: 200)
+                                    
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color.blue)
+                                        .frame(width: 120, height: 120) // 3x = 60% visual representation
+                                }
+                                
+                                Text("3X")
+                                    .font(.title)
+                                    .bold()
+                                    .foregroundColor(.white)
+                                    .padding(.vertical, 20)
+                            }
+                        }
+                        .padding(.horizontal, 40)
+                        
+                        Text("Enjoy a smoother experience, from managing side effects to hitting your weight-loss goals more effectively.")
+                            .font(.body)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal, 30)
+                            .padding(.top, 20)
+                    }
+                    
+                    Spacer(minLength: 60)
+                }
+            }
+            
+            Button {
+                onContinue()
+            } label: {
+                Text("Continue")
+                    .font(.headline)
+                    .bold()
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.black)
+                    .foregroundColor(.white)
+                    .cornerRadius(16)
+            }
+            .padding([.horizontal, .bottom])
+        }
+        .navigationBarBackButtonHidden()
+    }
+}
+
+
+// MARK: - Toughest Day View
+
+private struct ToughestDayView: View {
+    let onContinue: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            OnboardingHeaderView(progress: 0.96)
+            
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("Conquer your toughest day.")
+                            .font(.largeTitle)
+                            .bold()
+                        
+                        Text("Novo will time your \(Text("Wegovy®").bold()) dose so it peaks when your cravings hit hardest – making it easier to stay on track and in control on those challenging days.")
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.horizontal)
+                    .padding(.top)
+                    
+                    // Weekly effectiveness graph
+                    VStack(spacing: 16) {
+                        HStack {
+                            Text("Your Week")
+                                .font(.headline)
+                            Spacer()
+                            HStack(spacing: 4) {
+                                Image(systemName: "bolt.fill")
+                                    .foregroundColor(.blue)
+                                Text("Novo")
+                                    .italic()
+                            }
+                        }
+                        .padding(.horizontal)
+                        
+                        // Graph visualization
+                        ZStack {
+                            // Background
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.blue.opacity(0.1))
+                                .frame(height: 200)
+                            
+                            // Curve path
+                            GeometryReader { geometry in
+                                Path { path in
+                                    let width = geometry.size.width
+                                    let height = geometry.size.height
+                                    
+                                    path.move(to: CGPoint(x: 0, y: height * 0.8))
+                                    path.addCurve(
+                                        to: CGPoint(x: width * 0.2, y: height * 0.2),
+                                        control1: CGPoint(x: width * 0.05, y: height * 0.6),
+                                        control2: CGPoint(x: width * 0.15, y: height * 0.3)
+                                    )
+                                    path.addCurve(
+                                        to: CGPoint(x: width, y: height * 0.7),
+                                        control1: CGPoint(x: width * 0.3, y: height * 0.25),
+                                        control2: CGPoint(x: width * 0.7, y: height * 0.6)
+                                    )
+                                }
+                                .stroke(Color.blue, lineWidth: 3)
+                                
+                                // Peak indicator
+                                VStack {
+                                    Text("Perfect Shot day")
+                                        .font(.caption)
+                                        .padding(.horizontal, 12)
+                                        .padding(.vertical, 6)
+                                        .background(Color.white)
+                                        .cornerRadius(8)
+                                        .shadow(radius: 2)
+                                    
+                                    Text("Fri 8:15pm")
+                                        .font(.caption2)
+                                        .foregroundColor(.secondary)
+                                }
+                                .position(x: geometry.size.width * 0.2, y: geometry.size.height * 0.3)
+                            }
+                            .frame(height: 200)
+                        }
+                        .padding(.horizontal)
+                        
+                        // Day labels
+                        HStack {
+                            ForEach(["Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"], id: \.self) { day in
+                                Text(day)
+                                    .font(.caption)
+                                    .foregroundColor(day == "Fri" ? .blue : .secondary)
+                                    .frame(maxWidth: .infinity)
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                    
+                    Text("By picking the perfect injection day, you can boost your long-term GLP-1 effectiveness by as much as 3x.")
+                        .font(.body)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal, 30)
+                        .padding(.top, 20)
+                    
+                    Spacer(minLength: 40)
+                }
+            }
+            
+            Button {
+                onContinue()
+            } label: {
+                Text("Continue")
+                    .font(.headline)
+                    .bold()
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.black)
+                    .foregroundColor(.white)
+                    .cornerRadius(16)
+            }
+            .padding([.horizontal, .bottom])
+        }
+        .navigationBarBackButtonHidden()
+    }
+}
+
+
+
+
+// MARK: - Rating View
+
+private struct RatingView: View {
+    let onContinue: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            OnboardingHeaderView(progress: 0.99)
+            
+            VStack(spacing: 30) {
+                Text("Give us a rating")
+                    .font(.largeTitle)
+                    .bold()
+                    .foregroundColor(.white)
+                    .padding(.top, 40)
+                
+                // 5 star rating display
+                HStack(spacing: 8) {
+                    ForEach(0..<5) { _ in
+                        Image(systemName: "star.fill")
+                            .foregroundColor(.purple)
+                            .font(.title)
+                    }
+                }
+                
+                Spacer()
+                
+                // Testimonials section
+                VStack(spacing: 16) {
+                    TestimonialCard(
+                        name: "Olivia, 34",
+                        text: "I was nervous about starting GLP-1, but MeAgain made it so much easier. I've lost 10lbs in 2 months and I feel so much better."
+                    )
+                    
+                    TestimonialCard(
+                        name: "Taylor, 25", 
+                        text: "After 3 months on GLP-1 I hit a plateau. MeAgain helped me break through it. thx"
+                    )
+                    
+                    TestimonialCard(
+                        name: "Jordan, 31",
+                        text: "Even on bad days, MeAgain reminds me why I started and keeps me going. I finally believe I can do this."
+                    )
+                }
+                
+                Spacer()
+                
+                // Bottom message
+                HStack {
+                    Image(systemName: "leaf")
+                        .foregroundColor(.white)
+                    VStack {
+                        Text("We are a small team trying to")
+                        Text("build the best GLP-1 app, so a")
+                        Text("rating goes a really long way!")
+                    }
+                    .font(.subheadline)
+                    .foregroundColor(.white)
+                    Image(systemName: "leaf")
+                        .foregroundColor(.white)
+                }
+                
+                Spacer()
+                
+                // Purple gradient rating button
+                Button {
+                    requestAppStoreRating()
+                } label: {
+                    Text("Give us a rating")
+                        .font(.headline)
+                        .bold()
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(
+                            LinearGradient(
+                                gradient: Gradient(colors: [.purple, .pink]),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .foregroundColor(.white)
+                        .cornerRadius(16)
+                }
+                .padding([.horizontal, .bottom])
+            }
+        }
+        .background(Color.black)
+        .navigationBarBackButtonHidden()
+    }
+    
+    private func requestAppStoreRating() {
+        if #available(iOS 18.0, *) {
+            // Use newer API for iOS 18+
+            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                // Note: AppStore.requestReview(in:) would be used here when available
+                SKStoreReviewController.requestReview(in: scene)
+            }
+        } else {
+            // Use legacy API for earlier iOS versions
+            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                SKStoreReviewController.requestReview(in: scene)
+            }
+        }
+        
+        // Continue to next step after requesting rating
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            onContinue()
+        }
+    }
+}
+
+private struct TestimonialCard: View {
+    let name: String
+    let text: String
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            // Placeholder for profile picture
+            Circle()
+                .fill(Color.gray.opacity(0.3))
+                .frame(width: 50, height: 50)
+                .overlay(
+                    Image(systemName: "person.fill")
+                        .foregroundColor(.gray)
+                )
+            
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Text(name)
+                        .font(.headline)
+                        .foregroundColor(.white)
+                    
+                    Spacer()
+                    
+                    // 5 star rating
+                    HStack(spacing: 2) {
+                        ForEach(0..<5) { _ in
+                            Image(systemName: "star.fill")
+                                .foregroundColor(.yellow)
+                                .font(.caption)
+                        }
+                    }
+                }
+                
+                Text("\"\(text)\"")
+                    .font(.body)
+                    .foregroundColor(.white.opacity(0.9))
+            }
+            
+            Spacer()
+        }
+        .padding()
+        .background(Color.white.opacity(0.1))
+        .cornerRadius(12)
+        .padding(.horizontal)
+    }
+}
+
+// MARK: - Motivation View
+
+private struct MotivationView: View {
+    @EnvironmentObject var viewModel: OnboardingViewModel
+    let onContinue: () -> Void
+    
+    @State private var selectedMotivation: String? = nil
+    
+    private let motivationOptions = [
+        "I want to feel more confident in my own skin.",
+        "I'm just ready for a fresh start.",
+        "I want to boost my energy and strength.",
+        "To improve my health and manage PCOS.",
+        "I want to show up for the people I love.",
+        "I have a special event or milestone coming up.",
+        "To feel good wearing the clothes I love again."
+    ]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            OnboardingHeaderView(progress: 0.985)
+            
+            VStack(alignment: .leading, spacing: 16) {
+                Text("What's driving you to reach your goal?")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding(.top)
+                
+                Text("I want to do this because...")
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.horizontal)
+            
+            Spacer()
+            
+            ScrollView {
+                VStack(spacing: 12) {
+                    ForEach(motivationOptions, id: \.self) { option in
+                        OnboardingSelectionButton(
+                            title: option,
+                            isSelected: selectedMotivation == option
+                        ) {
+                            selectedMotivation = option
+                        }
+                    }
+                    
+                    // Other option
+                    OnboardingSelectionButton(
+                        title: "Other",
+                        isSelected: selectedMotivation == "Other"
+                    ) {
+                        selectedMotivation = "Other"
+                    }
+                }
+                .padding(.horizontal)
+            }
+            
+            Spacer()
+            
+            Button {
+                // Save the motivation
+                viewModel.motivation = selectedMotivation
+                onContinue()
+            } label: {
+                Text("Continue")
+                    .font(.headline)
+                    .bold()
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(selectedMotivation == nil ? Color(uiColor: .systemGray3) : Color.black)
+                    .foregroundColor(.white)
+                    .cornerRadius(16)
+            }
+            .disabled(selectedMotivation == nil)
+            .padding([.horizontal, .bottom])
+        }
+        .navigationBarBackButtonHidden()
+    }
+}
 
 // MARK: - Custom Toggle Style
 

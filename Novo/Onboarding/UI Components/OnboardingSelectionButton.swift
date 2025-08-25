@@ -36,7 +36,7 @@ struct OnboardingSelectionButton: View {
                 Spacer()
             }
             .padding()
-            .frame(maxWidth: .infinity, minHeight: 60)
+            .frame(maxWidth: .infinity, minHeight: 44)
             // The foreground color is now a simple modifier.
             .foregroundColor(isSelected ? .white : .primary)
             .background(isSelected ? Color.black : Color(uiColor: .systemGray6))

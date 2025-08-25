@@ -31,13 +31,37 @@ class OnboardingViewModel: ObservableObject {
     @Published var currentWeight: Double? // Stored in kg
     @Published var dreamWeight: Double? // Stored in kg  
     @Published var height: Double? // Stored in cm
-    @Published var useMetric: Bool = Locale.current.usesMetricSystem
+    @Published var useMetric: Bool = {
+        if #available(iOS 16.0, *) {
+            return Locale.current.measurementSystem == .metric
+        } else {
+            return Locale.current.usesMetricSystem
+        }
+    }()
     @Published var weeklyWeightGoal: Double? // Stored in kg per week
+    @Published var toughestDay: String? // Day when cravings hit hardest
+    @Published var primarySideEffectConcern: String? // Primary side effect concern
+    @Published var sideEffectsConcerns: [String]? // Multiple side effects concerns
+    @Published var motivation: String? // User's motivation for reaching their goal
 
     @Published var name: String = ""
     @Published var fitnessGoal: FitnessGoal = .loseWeight
     @Published var dateOfBirth: Date = Calendar.current.date(byAdding: .year, value: -20, to: .now) ?? Date()
     @Published var activityLevel: ActivityLevel = .sedentary
+    @Published var activityLevelString: String? {
+        didSet {
+            // Convert string selection to ActivityLevel enum
+            if let stringValue = activityLevelString {
+                let activityMapping: [String: ActivityLevel] = [
+                    "Sedentary (mostly inactive, little exercise)": .sedentary,
+                    "Lightly Active (light daily activity and movement)": .light,
+                    "Active (regular workouts or physical labor)": .moderate,
+                    "Very Active (intense exercise or very physical job)": .very
+                ]
+                activityLevel = activityMapping[stringValue] ?? .sedentary
+            }
+        }
+    }
     @Published var hasAgreedToTerms: Bool = false
     
     // MARK: - Validation Logic
