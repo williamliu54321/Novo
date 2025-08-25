@@ -6,7 +6,7 @@ import StoreKit
 enum OnboardingStep: Hashable {
     case journeyStatus
     case medication, dose, shotFrequency, benefits, gender
-    case name, goal, dateOfBirth, heightWeight, dreamWeight, summary, goalPace
+    case name, goal, dateOfBirth, heightWeight, startWeightDate, dreamWeight, summary, goalPace
     case glpEffectiveness, activity, toughestDayInfo, cravingsDay, sideEffects, rating, motivation, terms
 }
 
@@ -162,31 +162,10 @@ struct OnboardingFlowView: View {
                     )
 
                 case .shotFrequency:
-                    // Shot frequency selection with custom input
-                    OnboardingSingleSelectionView(
-                        title: "How often will you take your shots?",
-                        subtitle: "Pick not sure, if you don't know yet, you'll be able to edit this later.",
-                        selection: $viewModel.shotFrequency,
-                        nextStep: .benefits,
-                        progress: 0.5,
-                        options: [
-                            (title: "Every day", value: 1),
-                            (title: "Every 7 days (most common)", value: 7),
-                            (title: "Every 14 days", value: 14),
-                            (title: "Not sure, still figuring it out", value: -1)
-                        ],
-                        customModalTitle: "Days between",
-                        customModalPlaceholder: "Enter number of days",
-                        customModalOptions: [],
-                        valueToString: { frequency in // How to display an Int
-                            if frequency == -1 { return "Not sure, still figuring it out" }
-                            if frequency == 1 { return "Every day" }
-                            return "Every \(frequency) days"
-                        },
-                        stringToValue: { text in // How to parse user text
-                            return Int(text)
-                        }
-                    )
+                    // Shot frequency selection with last shot date
+                    ShotFrequencyView {
+                        navigationPath.append(.benefits)
+                    }
 
                 case .benefits:
                     // Benefits screen with chart
@@ -216,6 +195,12 @@ struct OnboardingFlowView: View {
                 case .heightWeight:
                     // Height and current weight selection
                     HeightWeightView {
+                        navigationPath.append(.startWeightDate)
+                    }
+
+                case .startWeightDate:
+                    // Start weight and date selection
+                    StartWeightDateView {
                         navigationPath.append(.dreamWeight)
                     }
 
@@ -910,6 +895,314 @@ private struct HeightWeightView: View {
     }
 }
 
+// MARK: - Start Weight Date View
+
+private struct StartWeightDateView: View {
+    @EnvironmentObject var viewModel: OnboardingViewModel
+    let onContinue: () -> Void
+    
+    @State private var startWeight: Double = 70.0 // Default in kg
+    @State private var startDate = Date()
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            OnboardingHeaderView(progress: 0.86)
+            
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Tell us where you started.")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding(.top)
+                
+                Text("Add the weight you were at when you began GLP-1, along with your start date.")
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.horizontal)
+            
+            Spacer()
+            
+            VStack(spacing: 32) {
+                // Start Weight Section with interactive stepper
+                VStack(spacing: 20) {
+                    HStack {
+                        Image(systemName: "scalemass")
+                            .font(.title2)
+                            .foregroundColor(.primary)
+                        Text("Start Weight")
+                            .font(.headline)
+                        Spacer()
+                    }
+                    
+                    // Weight display and controls
+                    VStack(spacing: 16) {
+                        Text(formatWeight(startWeight, isMetric: viewModel.useMetric))
+                            .font(.system(size: 36, weight: .bold))
+                        
+                        // Stepper controls
+                        HStack(spacing: 20) {
+                            Button(action: {
+                                let increment = viewModel.useMetric ? 1.0 : 2.0
+                                startWeight = max(getWeightRange().lowerBound, startWeight - increment)
+                            }) {
+                                Image(systemName: "minus.circle.fill")
+                                    .font(.system(size: 44))
+                                    .foregroundColor(.black)
+                            }
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                let increment = viewModel.useMetric ? 1.0 : 2.0
+                                startWeight = min(getWeightRange().upperBound, startWeight + increment)
+                            }) {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.system(size: 44))
+                                    .foregroundColor(.black)
+                            }
+                        }
+                        .padding(.horizontal, 40)
+                        
+                        // Slider for fine control
+                        Slider(value: $startWeight, in: getWeightRange(), step: viewModel.useMetric ? 0.5 : 1.0)
+                            .accentColor(.black)
+                            .padding(.horizontal)
+                    }
+                }
+                .padding()
+                .background(Color(uiColor: .systemGray6))
+                .cornerRadius(16)
+                .padding(.horizontal)
+                
+                // Start Date Section with date picker
+                HStack {
+                    Image(systemName: "calendar")
+                        .font(.title2)
+                        .foregroundColor(.primary)
+                    Text("Start Date")
+                        .font(.headline)
+                    
+                    Spacer()
+                    
+                    // Inline date picker on the right
+                    DatePicker("", selection: $startDate, displayedComponents: .date)
+                        .datePickerStyle(.compact)
+                        .labelsHidden()
+                        .preferredColorScheme(.light)
+                }
+                .padding()
+                .background(Color(uiColor: .systemGray6))
+                .cornerRadius(16)
+                .padding(.horizontal)
+                
+                // Imperial/Metric toggle
+                HStack(spacing: 16) {
+                    Text("imperial")
+                        .foregroundStyle(viewModel.useMetric ? .secondary : .primary)
+                        .font(.system(size: 16, weight: .medium))
+                    
+                    Toggle("", isOn: $viewModel.useMetric)
+                        .toggleStyle(BlackWhiteToggleStyle())
+                        .labelsHidden()
+                        .scaleEffect(0.8)
+                    
+                    Text("metric")
+                        .foregroundStyle(viewModel.useMetric ? .primary : .secondary)
+                        .font(.system(size: 16, weight: .medium))
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal)
+            }
+            
+            Spacer()
+            
+            Button {
+                // Save the values
+                viewModel.startWeight = viewModel.useMetric ? startWeight : startWeight * 0.453592 // Convert to kg if needed
+                viewModel.startDate = startDate
+                onContinue()
+            } label: {
+                Text("Continue")
+                    .font(.headline)
+                    .bold()
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.black)
+                    .foregroundColor(.white)
+                    .cornerRadius(16)
+            }
+            .padding([.horizontal, .bottom])
+        }
+        .navigationBarBackButtonHidden()
+        .onAppear {
+            // Initialize with current weight if available
+            if let existingStartWeight = viewModel.startWeight {
+                startWeight = viewModel.useMetric ? existingStartWeight : existingStartWeight * 2.20462 // kg to lbs
+            } else if let currentWeight = viewModel.currentWeight {
+                startWeight = viewModel.useMetric ? currentWeight : currentWeight * 2.20462 // Default to current weight
+            } else {
+                startWeight = viewModel.useMetric ? 70.0 : 154.0 // 70kg ≈ 154lbs
+            }
+            
+            // Initialize start date
+            if let existingStartDate = viewModel.startDate {
+                startDate = existingStartDate
+            }
+        }
+        .onChange(of: viewModel.useMetric) { _, newValue in
+            // Convert weight when unit changes
+            if newValue {
+                // Imperial to Metric (lbs to kg)
+                startWeight = startWeight * 0.453592
+            } else {
+                // Metric to Imperial (kg to lbs)
+                startWeight = startWeight * 2.20462
+            }
+        }
+    }
+    
+    private func formatWeight(_ weight: Double, isMetric: Bool) -> String {
+        if isMetric {
+            return String(format: "%.1f kg", weight)
+        } else {
+            return String(format: "%.1f lbs", weight)
+        }
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter.string(from: date)
+    }
+    
+    private func getWeightRange() -> ClosedRange<Double> {
+        if viewModel.useMetric {
+            return 30.0...200.0 // kg
+        } else {
+            return 66.0...440.0 // lbs
+        }
+    }
+}
+
+// MARK: - Shot Frequency View
+
+private struct ShotFrequencyView: View {
+    @EnvironmentObject var viewModel: OnboardingViewModel
+    let onContinue: () -> Void
+    
+    @State private var selectedFrequency: Int? = nil
+    @State private var lastShotDate = Date()
+    @State private var showingCustomFrequency = false
+    
+    private let frequencyOptions = [
+        (title: "Every day", value: 1),
+        (title: "Every 7 days (most common)", value: 7),
+        (title: "Every 14 days", value: 14),
+        (title: "Custom", value: 0)
+    ]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            OnboardingHeaderView(progress: 0.5)
+            
+            VStack(alignment: .leading, spacing: 16) {
+                Text("How often do you take your shots?")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding(.top)
+            }
+            .padding(.horizontal)
+            
+            Spacer()
+            
+            ScrollView {
+                VStack(spacing: 12) {
+                    ForEach(frequencyOptions, id: \.value) { option in
+                        OnboardingSelectionButton(
+                            title: option.title,
+                            isSelected: selectedFrequency == option.value
+                        ) {
+                            if option.value == 0 {
+                                // Custom option
+                                showingCustomFrequency = true
+                            } else {
+                                selectedFrequency = option.value
+                            }
+                        }
+                    }
+                    
+                    // Last shot taken section with inline date picker
+                    HStack {
+                        Image(systemName: "calendar")
+                            .font(.title2)
+                            .foregroundColor(.primary)
+                        Text("Last shot taken")
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        // Inline date picker on the right
+                        DatePicker("", selection: $lastShotDate, displayedComponents: .date)
+                            .datePickerStyle(.compact)
+                            .labelsHidden()
+                            .preferredColorScheme(.light)
+                    }
+                    .padding()
+                    .background(Color(uiColor: .systemGray6))
+                    .cornerRadius(16)
+                    .padding(.top, 20)
+                }
+                .padding(.horizontal)
+            }
+            
+            Spacer()
+            
+            Button {
+                // Save the values
+                viewModel.shotFrequency = selectedFrequency
+                viewModel.lastShotDate = lastShotDate
+                onContinue()
+            } label: {
+                Text("Continue")
+                    .font(.headline)
+                    .bold()
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(selectedFrequency == nil ? Color(uiColor: .systemGray3) : Color.black)
+                    .foregroundColor(.white)
+                    .cornerRadius(16)
+            }
+            .disabled(selectedFrequency == nil)
+            .padding([.horizontal, .bottom])
+        }
+        .navigationBarBackButtonHidden()
+        .onAppear {
+            // Initialize with existing values
+            selectedFrequency = viewModel.shotFrequency
+            if let existingLastShotDate = viewModel.lastShotDate {
+                lastShotDate = existingLastShotDate
+            }
+        }
+        .sheet(isPresented: $showingCustomFrequency) {
+            CustomValueInputView(
+                title: "Days between",
+                placeholder: "Enter number of days",
+                keyboardType: .numberPad,
+                additionalOptions: []
+            ) { customValue in
+                if let frequency = Int(customValue) {
+                    selectedFrequency = frequency
+                }
+            }
+        }
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM dd, yyyy"
+        return formatter.string(from: date)
+    }
+}
+
 // MARK: - Goal Pace View
 
 private struct GoalPaceView: View {
@@ -1370,6 +1663,8 @@ private struct ToughestDayView: View {
 private struct RatingView: View {
     let onContinue: () -> Void
     
+    @State private var hasRequestedRating = false
+    
     var body: some View {
         VStack(spacing: 0) {
             OnboardingHeaderView(progress: 0.99)
@@ -1429,30 +1724,39 @@ private struct RatingView: View {
                 
                 Spacer()
                 
-                // Purple gradient rating button
+                // Button that changes from "Give us a rating" to "Continue"
                 Button {
-                    requestAppStoreRating()
+                    if hasRequestedRating {
+                        onContinue()
+                    } else {
+                        requestAppStoreRating()
+                    }
                 } label: {
-                    Text("Give us a rating")
+                    Text(hasRequestedRating ? "Continue" : "Give us a rating")
                         .font(.headline)
                         .bold()
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(
+                            hasRequestedRating ? 
+                            LinearGradient(
+                                gradient: Gradient(colors: [.white, .white]),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            ) :
                             LinearGradient(
                                 gradient: Gradient(colors: [.purple, .pink]),
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
                         )
-                        .foregroundColor(.white)
+                        .foregroundColor(hasRequestedRating ? .black : .white)
                         .cornerRadius(16)
                 }
                 .padding([.horizontal, .bottom])
             }
         }
         .background(Color.black)
-        .navigationBarBackButtonHidden()
     }
     
     private func requestAppStoreRating() {
@@ -1469,10 +1773,8 @@ private struct RatingView: View {
             }
         }
         
-        // Continue to next step after requesting rating
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            onContinue()
-        }
+        // Update state to show Continue button
+        hasRequestedRating = true
     }
 }
 
@@ -1530,6 +1832,7 @@ private struct MotivationView: View {
     let onContinue: () -> Void
     
     @State private var selectedMotivation: String? = nil
+    @State private var showingCustomInput = false
     
     private let motivationOptions = [
         "I want to feel more confident in my own skin.",
@@ -1572,9 +1875,9 @@ private struct MotivationView: View {
                     // Other option
                     OnboardingSelectionButton(
                         title: "Other",
-                        isSelected: selectedMotivation == "Other"
+                        isSelected: selectedMotivation != nil && !motivationOptions.contains(selectedMotivation!)
                     ) {
-                        selectedMotivation = "Other"
+                        showingCustomInput = true
                     }
                 }
                 .padding(.horizontal)
@@ -1600,6 +1903,22 @@ private struct MotivationView: View {
             .padding([.horizontal, .bottom])
         }
         .navigationBarBackButtonHidden()
+        .sheet(isPresented: $showingCustomInput) {
+            CustomValueInputView(
+                title: "What motivates you?",
+                placeholder: "Enter your motivation",
+                keyboardType: .default,
+                additionalOptions: [
+                    "I want to be a role model for my family.",
+                    "To regain control over my eating habits.",
+                    "I want to improve my mental health.",
+                    "To feel comfortable in social situations again.",
+                    "I want to live a longer, healthier life."
+                ]
+            ) { customMotivation in
+                selectedMotivation = customMotivation
+            }
+        }
     }
 }
 

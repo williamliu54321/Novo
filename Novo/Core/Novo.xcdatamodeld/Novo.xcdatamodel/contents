@@ -15,6 +15,9 @@
         <attribute name="medication" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="shotFrequency" optional="YES" attributeType="Integer 32" usesScalarValueType="NO"/>
+        <attribute name="startWeight" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="lastShotDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="useMetric" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="onboardingCompletedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>

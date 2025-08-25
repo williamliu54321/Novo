@@ -27,8 +27,11 @@ class OnboardingViewModel: ObservableObject {
     @Published var medication: String?
     @Published var dose: Double? // <-- 1. ADD THE DOSE PROPERTY (as a Double)
     @Published var shotFrequency: Int? // Number of days between shots
+    @Published var lastShotDate: Date? // Date of last shot taken
     @Published var gender: String?
     @Published var currentWeight: Double? // Stored in kg
+    @Published var startWeight: Double? // Stored in kg
+    @Published var startDate: Date? // GLP-1 start date
     @Published var dreamWeight: Double? // Stored in kg  
     @Published var height: Double? // Stored in cm
     @Published var useMetric: Bool = {
@@ -92,6 +95,12 @@ class OnboardingViewModel: ObservableObject {
         if let currentWeight = self.currentWeight {
             newUserProfile.currentWeight = NSNumber(value: currentWeight)
         }
+        if let startWeight = self.startWeight {
+            newUserProfile.startWeight = NSNumber(value: startWeight)
+        }
+        if let startDate = self.startDate {
+            newUserProfile.startDate = startDate
+        }
         if let dreamWeight = self.dreamWeight {
             newUserProfile.dreamWeight = NSNumber(value: dreamWeight)
         }
@@ -111,6 +120,11 @@ class OnboardingViewModel: ObservableObject {
             newUserProfile.shotFrequency = NSNumber(value: frequency)
         } else {
             newUserProfile.shotFrequency = nil
+        }
+        
+        // Save last shot date
+        if let lastShotDate = self.lastShotDate {
+            newUserProfile.lastShotDate = lastShotDate
         }
         
         // --- 2. ADD THE SAVING LOGIC FOR THE DOSE ---
