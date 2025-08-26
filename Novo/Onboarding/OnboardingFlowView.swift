@@ -2,12 +2,13 @@ import SwiftUI
 import UIKit // Needed for styling the page dots
 import Foundation
 import StoreKit
+import UserNotifications
 
 enum OnboardingStep: Hashable {
     case journeyStatus
     case medication, dose, shotFrequency, benefits, gender
     case name, goal, dateOfBirth, heightWeight, startWeightDate, dreamWeight, summary, goalPace
-    case glpEffectiveness, activity, toughestDayInfo, cravingsDay, sideEffects, rating, motivation, terms
+    case glpEffectiveness, activity, toughestDayInfo, cravingsDay, sideEffects, rating, motivation, notifications, completion, personalPlan, terms
 }
 
 struct OnboardingPageInfo: Identifiable {
@@ -303,7 +304,24 @@ struct OnboardingFlowView: View {
                 case .rating:
                     // Rating slide with testimonials
                     RatingView {
-                        navigationPath.append(.terms)
+                        navigationPath.append(.notifications)
+                    }
+
+                case .notifications:
+                    // Notification permission slide
+                    NotificationPermissionView {
+                        navigationPath.append(.completion)
+                    }
+
+                case .completion:
+                    // Final completion slide
+                    CompletionView {
+                        navigationPath.append(.personalPlan)
+                    }
+                
+                case .personalPlan:
+                    PersonalPlanView(viewModel: viewModel) {
+                        handleCompletion()
                     }
 
                 case .name:
@@ -993,9 +1011,12 @@ private struct StartWeightDateView: View {
                 .background(Color(uiColor: .systemGray6))
                 .cornerRadius(16)
                 .padding(.horizontal)
-                
-                // Imperial/Metric toggle
-                HStack(spacing: 16) {
+            }
+            
+            Spacer()
+            
+            // Imperial/Metric toggle
+            HStack(spacing: 16) {
                     Text("imperial")
                         .foregroundStyle(viewModel.useMetric ? .secondary : .primary)
                         .font(.system(size: 16, weight: .medium))
@@ -1011,9 +1032,7 @@ private struct StartWeightDateView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal)
-            }
-            
-            Spacer()
+                .padding(.bottom, 30) // Add spacing between toggle and button to match DreamWeightView
             
             Button {
                 // Save the values
@@ -1664,6 +1683,7 @@ private struct RatingView: View {
     let onContinue: () -> Void
     
     @State private var hasRequestedRating = false
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack(spacing: 0) {
@@ -1757,6 +1777,18 @@ private struct RatingView: View {
             }
         }
         .background(Color.black)
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                }
+            }
+        }
     }
     
     private func requestAppStoreRating() {
@@ -1919,6 +1951,883 @@ private struct MotivationView: View {
                 selectedMotivation = customMotivation
             }
         }
+    }
+}
+
+// MARK: - Notification Permission View
+
+private struct NotificationPermissionView: View {
+    let onContinue: () -> Void
+    
+    @State private var animateElements = false
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        ZStack {
+            // Black background like rating slide
+            Color.black
+                .ignoresSafeArea()
+            
+            
+            VStack(alignment: .leading, spacing: 0) {
+                OnboardingHeaderView(progress: 0.995)
+                
+                VStack(alignment: .center, spacing: 32) {
+                    // Hero section
+                    VStack(spacing: 20) {
+                        // Large notification bell icon
+                        ZStack {
+                            Circle()
+                                .fill(
+                                    LinearGradient(
+                                        gradient: Gradient(colors: [.purple, .pink]),
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .frame(width: 100, height: 100)
+                                .shadow(color: Color.purple.opacity(0.4), radius: 25, x: 0, y: 12)
+                            
+                            Image(systemName: "bell.badge.fill")
+                                .font(.system(size: 40))
+                                .foregroundColor(.white)
+                        }
+                        .opacity(animateElements ? 1.0 : 0.0)
+                        
+                        VStack(spacing: 12) {
+                            Text("Stay on track with smart reminders")
+                                .font(.largeTitle)
+                                .bold()
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                            
+                            Text("Get personalized notifications to help you reach your goals faster.")
+                                .font(.body)
+                                .foregroundColor(.white.opacity(0.7))
+                                .multilineTextAlignment(.center)
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 20)
+                    
+                    Spacer()
+                    
+                    // Benefits with staggered animation
+                    VStack(spacing: 16) {
+                        NotificationBenefitRow(
+                            icon: "bell.badge",
+                            title: "Daily Check-ins",
+                            description: "Gentle reminders to log your meals and progress",
+                            color: .purple,
+                            delay: 0.2
+                        )
+                        
+                        NotificationBenefitRow(
+                            icon: "target",
+                            title: "Goal Tracking", 
+                            description: "Celebrate milestones and stay motivated",
+                            color: .purple,
+                            delay: 0.4
+                        )
+                        
+                        NotificationBenefitRow(
+                            icon: "lightbulb",
+                            title: "Personalized Tips",
+                            description: "Custom advice based on your GLP-1 journey",
+                            color: .purple,
+                            delay: 0.6
+                        )
+                    }
+                    .padding(.horizontal)
+                    
+                    Spacer()
+                    
+                    // Buttons with animation
+                    VStack(spacing: 16) {
+                        Button {
+                            requestNotificationPermission()
+                        } label: {
+                            HStack(spacing: 8) {
+                                Image(systemName: "bell.fill")
+                                Text("Enable Notifications")
+                                    .fontWeight(.semibold)
+                            }
+                            .font(.headline)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [.purple, .pink]),
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .foregroundColor(.white)
+                            .cornerRadius(16)
+                            .shadow(color: Color.purple.opacity(0.3), radius: 12, x: 0, y: 6)
+                        }
+                        
+                        Button {
+                            onContinue()
+                        } label: {
+                            Text("Maybe Later")
+                                .font(.body)
+                                .fontWeight(.medium)
+                                .foregroundColor(.secondary)
+                                .padding(.vertical, 8)
+                        }
+                    }
+                    .padding([.horizontal, .bottom])
+                }
+            }
+        }
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                }
+            }
+        }
+        .onAppear {
+            withAnimation(.easeOut(duration: 1.2)) {
+                animateElements = true
+            }
+        }
+    }
+    
+    private func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            DispatchQueue.main.async {
+                onContinue()
+            }
+        }
+    }
+}
+
+private struct NotificationBenefitRow: View {
+    let icon: String
+    let title: String
+    let description: String
+    let color: Color
+    let delay: Double
+    
+    @State private var isVisible = false
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            ZStack {
+                Circle()
+                    .fill(color.opacity(0.15))
+                    .frame(width: 44, height: 44)
+                
+                Image(systemName: icon)
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(color)
+            }
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                
+                Text(description)
+                    .font(.body)
+                    .foregroundColor(.white.opacity(0.7))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            
+            Spacer()
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white.opacity(0.1))
+                .stroke(Color.white.opacity(0.2), lineWidth: 1)
+        )
+        .opacity(isVisible ? 1.0 : 0.0)
+        .onAppear {
+            withAnimation(.easeOut(duration: 0.3).delay(delay * 0.5)) {
+                isVisible = true
+            }
+        }
+    }
+}
+
+// MARK: - Completion View
+
+private struct CompletionView: View {
+    let onContinue: () -> Void
+    
+    @State private var animateContent = false
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        ZStack {
+            // Black background like rating slide
+            Color.black
+                .ignoresSafeArea()
+            
+            
+            VStack(spacing: 0) {
+                // Custom progress bar at 100%
+                VStack(spacing: 0) {
+                    HStack {
+                        Spacer()
+                    }
+                    .frame(height: 4)
+                    .background(Color.white)
+                    .padding(.horizontal)
+                    .padding(.top, 8)
+                    .scaleEffect(x: animateContent ? 1.0 : 0.0, anchor: .leading)
+                }
+                
+                VStack(spacing: 40) {
+                    Spacer()
+                    
+                    // Success animation area
+                    VStack(spacing: 32) {
+                        // Animated checkmark with rings
+                        ZStack {
+                            // Single ring - purple
+                            Circle()
+                                .stroke(Color.purple.opacity(0.4), lineWidth: 3)
+                                .frame(width: 110, height: 110)
+                                .opacity(animateContent ? 1.0 : 0.0)
+                            
+                            // Main circle with purple gradient
+                            Circle()
+                                .fill(
+                                    LinearGradient(
+                                        gradient: Gradient(colors: [.purple, .pink]),
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .frame(width: 85, height: 85)
+                                .shadow(color: Color.purple.opacity(0.5), radius: 25, x: 0, y: 10)
+                                .scaleEffect(animateContent ? 1.0 : 0.8)
+                            
+                            // Checkmark with animation
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 38, weight: .bold))
+                                .foregroundColor(.white)
+                                .scaleEffect(animateContent ? 1.0 : 0.0)
+                        }
+                        
+                        // Text with staggered animation
+                        VStack(spacing: 12) {
+                            HStack(spacing: 8) {
+                                Text("All done!")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .opacity(animateContent ? 1.0 : 0.0)
+                                
+                                Text("🎉")
+                                    .font(.title)
+                                    .opacity(animateContent ? 1.0 : 0.0)
+                            }
+                            
+                            Text("Thank you for trusting us")
+                                .font(.largeTitle)
+                                .bold()
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                                .opacity(animateContent ? 1.0 : 0.0)
+                        }
+                    }
+                    
+                    // Subtitle with delay
+                    Text("Let's create the perfect Plan for you.")
+                        .font(.title3)
+                        .foregroundColor(.white.opacity(0.8))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                        .opacity(animateContent ? 1.0 : 0.0)
+                    
+                    // Animated feature highlights
+                    VStack(spacing: 20) {
+                        FeatureHighlight(
+                            icon: "target",
+                            text: "Personalized GLP-1 guidance",
+                            color: .white,
+                            delay: 0.0
+                        )
+                        
+                        FeatureHighlight(
+                            icon: "chart.line.uptrend.xyaxis",
+                            text: "Track your progress daily",
+                            color: .white,
+                            delay: 0.2
+                        )
+                        
+                        FeatureHighlight(
+                            icon: "heart.fill",
+                            text: "Reach your dream weight",
+                            color: .white,
+                            delay: 0.4
+                        )
+                    }
+                    .padding(.horizontal, 30)
+                    .opacity(animateContent ? 1.0 : 0.0)
+                    
+                    Spacer()
+                    
+                    // Animated button
+                    Button {
+                        onContinue()
+                    } label: {
+                        HStack(spacing: 12) {
+                            Text("Create My Plan")
+                                .font(.headline)
+                                .fontWeight(.bold)
+                            
+                            Image(systemName: "arrow.right.circle.fill")
+                                .font(.title3)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(
+                            LinearGradient(
+                                gradient: Gradient(colors: [.purple, .pink]),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .foregroundColor(.white)
+                        .cornerRadius(20)
+                        .shadow(color: Color.purple.opacity(0.4), radius: 15, x: 0, y: 8)
+                    }
+                    .opacity(animateContent ? 1.0 : 0.0)
+                    .padding([.horizontal, .bottom])
+                }
+            }
+        }
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                }
+            }
+        }
+        .onAppear {
+            withAnimation(.easeOut(duration: 0.6)) {
+                animateContent = true
+            }
+        }
+    }
+}
+
+private struct FeatureHighlight: View {
+    let icon: String
+    let text: String
+    let color: Color
+    let delay: Double
+    
+    @State private var isVisible = false
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            ZStack {
+                Circle()
+                    .fill(Color.white.opacity(0.1))
+                    .frame(width: 40, height: 40)
+                
+                Image(systemName: icon)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(.white)
+            }
+            
+            Text(text)
+                .font(.body)
+                .fontWeight(.medium)
+                .foregroundColor(.white)
+            
+            Spacer()
+            
+            Image(systemName: "checkmark.circle.fill")
+                .font(.title3)
+                .foregroundColor(.white.opacity(0.8))
+                .scaleEffect(isVisible ? 1.0 : 0.0)
+        }
+        .padding(.vertical, 8)
+        .opacity(isVisible ? 1.0 : 0.0)
+        .onAppear {
+            withAnimation(.easeOut(duration: 0.4).delay(delay + 0.8)) {
+                isVisible = true
+            }
+        }
+    }
+}
+
+// MARK: - Personal Plan View
+private struct PersonalPlanView: View {
+    let viewModel: OnboardingViewModel
+    let onContinue: () -> Void
+    
+    @State private var animateContent = false
+    @State private var selectedWeek = 0
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        ZStack {
+            // Gradient background matching app theme
+            LinearGradient(
+                gradient: Gradient(colors: [Color.black, Color.purple.opacity(0.3)]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                // Header
+                VStack(spacing: 12) {
+                    Text("Your Personal Plan")
+                        .font(.largeTitle)
+                        .bold()
+                        .foregroundColor(.white)
+                    
+                    Text("Based on your goals and preferences")
+                        .font(.subheadline)
+                        .foregroundColor(.white.opacity(0.8))
+                }
+                .padding(.top, 60)
+                .opacity(animateContent ? 1.0 : 0.0)
+                
+                ScrollView {
+                    VStack(spacing: 24) {
+                        // Weight Goal Card
+                        VStack(alignment: .leading, spacing: 16) {
+                            HStack {
+                                Image(systemName: "target")
+                                    .font(.title2)
+                                    .foregroundColor(.purple)
+                                
+                                Text("Weight Goal")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                
+                                Spacer()
+                            }
+                            
+                            HStack(alignment: .bottom, spacing: 20) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("Current")
+                                    	.font(.caption)
+                                        .foregroundColor(.white.opacity(0.6))
+                                    Text(formatWeight(viewModel.currentWeight ?? 0))
+                                        .font(.title2)
+                                        .bold()
+                                        .foregroundColor(.white)
+                                }
+                                
+                                Image(systemName: "arrow.right")
+                                    .foregroundColor(.purple)
+                                    .font(.title3)
+                                
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("Goal")
+                                        .font(.caption)
+                                        .foregroundColor(.white.opacity(0.6))
+                                    Text(formatWeight(viewModel.dreamWeight ?? 0))
+                                        .font(.title2)
+                                        .bold()
+                                        .foregroundColor(.green)
+                                }
+                                
+                                Spacer()
+                                
+                                VStack(alignment: .trailing, spacing: 4) {
+                                    Text("Total Loss")
+                                        .font(.caption)
+                                        .foregroundColor(.white.opacity(0.6))
+                                    let totalLoss = (viewModel.currentWeight ?? 0) - (viewModel.dreamWeight ?? 0)
+                                    Text(formatWeight(totalLoss))
+                                        .font(.title3)
+                                        .bold()
+                                        .foregroundColor(.pink)
+                                }
+                            }
+                            
+                            // Estimated timeline
+                            HStack {
+                                Image(systemName: "calendar")
+                                    .font(.caption)
+                                    .foregroundColor(.purple.opacity(0.8))
+                                Text("Estimated: \(estimatedWeeks()) weeks")
+                                    .font(.footnote)
+                                    .foregroundColor(.white.opacity(0.7))
+                            }
+                            .padding(.top, 4)
+                        }
+                        .padding()
+                        .background(Color.white.opacity(0.1))
+                        .cornerRadius(16)
+                        .opacity(animateContent ? 1.0 : 0.0)
+                        
+                        // Medication Schedule Card
+                        VStack(alignment: .leading, spacing: 16) {
+                            HStack {
+                                Image(systemName: "syringe")
+                                    .font(.title2)
+                                    .foregroundColor(.blue)
+                                
+                                Text("Medication Schedule")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                
+                                Spacer()
+                            }
+                            
+                            VStack(alignment: .leading, spacing: 12) {
+                                HStack {
+                                    Text("Medication:")
+                                        .font(.subheadline)
+                                        .foregroundColor(.white.opacity(0.7))
+                                    Text(viewModel.medication ?? "Not selected")
+                                        .font(.subheadline)
+                                        .bold()
+                                        .foregroundColor(.white)
+                                }
+                                
+                                if let dose = viewModel.dose, dose > 0 {
+                                    HStack {
+                                        Text("Current Dose:")
+                                            .font(.subheadline)
+                                            .foregroundColor(.white.opacity(0.7))
+                                        Text("\(String(format: "%.2f", dose)) mg")
+                                            .font(.subheadline)
+                                            .bold()
+                                            .foregroundColor(.white)
+                                    }
+                                }
+                                
+                                HStack {
+                                    Text("Frequency:")
+                                        .font(.subheadline)
+                                        .foregroundColor(.white.opacity(0.7))
+                                    Text(frequencyText())
+                                        .font(.subheadline)
+                                        .bold()
+                                        .foregroundColor(.white)
+                                }
+                                
+                                if let lastShot = viewModel.lastShotDate {
+                                    HStack {
+                                        Text("Next Shot:")
+                                            .font(.subheadline)
+                                            .foregroundColor(.white.opacity(0.7))
+                                        Text(nextShotDate(from: lastShot))
+                                            .font(.subheadline)
+                                            .bold()
+                                            .foregroundColor(.green)
+                                    }
+                                }
+                            }
+                        }
+                        .padding()
+                        .background(Color.white.opacity(0.1))
+                        .cornerRadius(16)
+                        .opacity(animateContent ? 1.0 : 0.0)
+                        .animation(.easeOut(duration: 0.5).delay(0.2), value: animateContent)
+                        
+                        // Weekly Progress Preview
+                        VStack(alignment: .leading, spacing: 16) {
+                            HStack {
+                                Image(systemName: "chart.line.uptrend.xyaxis")
+                                    .font(.title2)
+                                    .foregroundColor(.green)
+                                
+                                Text("Your Progress Path")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                
+                                Spacer()
+                            }
+                            
+                            // Week selector
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 12) {
+                                    ForEach(0..<8) { week in
+                                        Button {
+                                            withAnimation(.easeOut(duration: 0.2)) {
+                                                selectedWeek = week
+                                            }
+                                        } label: {
+                                            VStack(spacing: 4) {
+                                                Text("Week")
+                                                    .font(.caption2)
+                                                Text("\(week + 1)")
+                                                    .font(.headline)
+                                            }
+                                            .foregroundColor(selectedWeek == week ? .black : .white)
+                                            .frame(width: 60, height: 50)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 10)
+                                                    .fill(selectedWeek == week ? Color.white : Color.white.opacity(0.2))
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            // Expected progress for selected week
+                            VStack(alignment: .leading, spacing: 8) {
+                                let expectedWeight = calculateExpectedWeight(week: selectedWeek)
+                                HStack {
+                                    Text("Expected Weight:")
+                                        .font(.subheadline)
+                                        .foregroundColor(.white.opacity(0.7))
+                                    Text(formatWeight(expectedWeight))
+                                        .font(.subheadline)
+                                        .bold()
+                                        .foregroundColor(.white)
+                                }
+                                
+                                let progressPercent = calculateProgressPercent(week: selectedWeek)
+                                HStack {
+                                    Text("Progress:")
+                                        .font(.subheadline)
+                                        .foregroundColor(.white.opacity(0.7))
+                                    Text("\(Int(progressPercent))% to goal")
+                                        .font(.subheadline)
+                                        .bold()
+                                        .foregroundColor(.green)
+                                }
+                                
+                                // Progress bar
+                                GeometryReader { geometry in
+                                    ZStack(alignment: .leading) {
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .fill(Color.white.opacity(0.2))
+                                            .frame(height: 8)
+                                        
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .fill(
+                                                LinearGradient(
+                                                    gradient: Gradient(colors: [.green, .blue]),
+                                                    startPoint: .leading,
+                                                    endPoint: .trailing
+                                                )
+                                            )
+                                            .frame(width: geometry.size.width * progressPercent / 100, height: 8)
+                                    }
+                                }
+                                .frame(height: 8)
+                                .padding(.top, 4)
+                            }
+                        }
+                        .padding()
+                        .background(Color.white.opacity(0.1))
+                        .cornerRadius(16)
+                        .opacity(animateContent ? 1.0 : 0.0)
+                        .animation(.easeOut(duration: 0.5).delay(0.4), value: animateContent)
+                        
+                        // Personalized Tips
+                        VStack(alignment: .leading, spacing: 16) {
+                            HStack {
+                                Image(systemName: "lightbulb.fill")
+                                    .font(.title2)
+                                    .foregroundColor(.yellow)
+                                
+                                Text("Your Personalized Tips")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                
+                                Spacer()
+                            }
+                            
+                            VStack(alignment: .leading, spacing: 12) {
+                                ForEach(getPersonalizedTips(), id: \.self) { tip in
+                                    HStack(alignment: .top, spacing: 12) {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .font(.caption)
+                                            .foregroundColor(.green)
+                                            .padding(.top, 2)
+                                        
+                                        Text(tip)
+                                            .font(.subheadline)
+                                            .foregroundColor(.white.opacity(0.9))
+                                            .fixedSize(horizontal: false, vertical: true)
+                                        
+                                        Spacer()
+                                    }
+                                }
+                            }
+                        }
+                        .padding()
+                        .background(Color.white.opacity(0.1))
+                        .cornerRadius(16)
+                        .opacity(animateContent ? 1.0 : 0.0)
+                        .animation(.easeOut(duration: 0.5).delay(0.6), value: animateContent)
+                    }
+                    .padding()
+                }
+                
+                // CTA Button
+                Button {
+                    onContinue()
+                } label: {
+                    HStack {
+                        Text("Unlock My Full Plan")
+                            .font(.headline)
+                            .bold()
+                        
+                        Image(systemName: "lock.open.fill")
+                            .font(.title3)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [.purple, .pink]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .foregroundColor(.white)
+                    .cornerRadius(16)
+                    .shadow(color: .purple.opacity(0.3), radius: 10, y: 5)
+                }
+                .padding()
+                .opacity(animateContent ? 1.0 : 0.0)
+                .animation(.easeOut(duration: 0.5).delay(0.8), value: animateContent)
+            }
+        }
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                }
+            }
+        }
+        .onAppear {
+            withAnimation(.easeOut(duration: 0.6)) {
+                animateContent = true
+            }
+        }
+    }
+    
+    // Helper functions
+    private func formatWeight(_ weight: Double) -> String {
+        if viewModel.useMetric {
+            return String(format: "%.1f kg", weight)
+        } else {
+            let lbs = weight * 2.20462
+            return String(format: "%.0f lbs", lbs)
+        }
+    }
+    
+    private func estimatedWeeks() -> Int {
+        guard let current = viewModel.currentWeight,
+              let goal = viewModel.dreamWeight else { return 12 }
+        
+        let totalToLose = current - goal
+        let weeklyLoss = viewModel.useMetric ? 0.5 : 1.1 // kg or lbs per week
+        return max(4, Int(totalToLose / weeklyLoss))
+    }
+    
+    private func frequencyText() -> String {
+        guard let frequency = viewModel.shotFrequency else {
+            return "Not set"
+        }
+        
+        switch frequency {
+        case 7:
+            return "Weekly"
+        case 14:
+            return "Bi-weekly"
+        case 30:
+            return "Monthly"
+        default:
+            return "Every \(frequency) days"
+        }
+    }
+    
+    private func nextShotDate(from lastShot: Date) -> String {
+        guard let frequency = viewModel.shotFrequency else {
+            return "Not set"
+        }
+        
+        let nextDate = Calendar.current.date(byAdding: .day, value: frequency, to: lastShot) ?? Date()
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter.string(from: nextDate)
+    }
+    
+    private func calculateExpectedWeight(week: Int) -> Double {
+        guard let current = viewModel.currentWeight else { return 0 }
+        
+        let weeklyLoss = viewModel.useMetric ? 0.5 : 1.1
+        return max(viewModel.dreamWeight ?? 0, current - (weeklyLoss * Double(week + 1)))
+    }
+    
+    private func calculateProgressPercent(week: Int) -> Double {
+        guard let current = viewModel.currentWeight,
+              let goal = viewModel.dreamWeight else { return 0 }
+        
+        let totalToLose = current - goal
+        let expectedLoss = (viewModel.useMetric ? 0.5 : 1.1) * Double(week + 1)
+        let actualProgress = min(expectedLoss, totalToLose)
+        
+        return totalToLose > 0 ? (actualProgress / totalToLose) * 100 : 0
+    }
+    
+    private func getPersonalizedTips() -> [String] {
+        var tips: [String] = []
+        
+        // Activity-based tips
+        if let activity = viewModel.activityLevelString {
+            if activity.contains("Sedentary") {
+                tips.append("Start with 10-minute walks after meals to boost your metabolism")
+            } else if activity.contains("Very Active") {
+                tips.append("Maintain your exercise routine but listen to your body as you adjust to the medication")
+            }
+        }
+        
+        // Medication-based tips
+        if let med = viewModel.medication {
+            if med.contains("Ozempic") || med.contains("Wegovy") {
+                tips.append("Take your weekly shot on the same day for best results")
+            }
+        }
+        
+        // Goal-based tips
+        if viewModel.fitnessGoal == .loseWeight {
+            tips.append("Focus on protein intake to preserve muscle mass during weight loss")
+        }
+        
+        // Generic helpful tips
+        tips.append("Stay hydrated - aim for 8 glasses of water daily")
+        tips.append("Track your progress with weekly photos and measurements")
+        
+        return Array(tips.prefix(4))
+    }
+}
+
+extension Color {
+    static var random: Color {
+        Color(
+            red: Double.random(in: 0.3...1),
+            green: Double.random(in: 0.3...1),
+            blue: Double.random(in: 0.3...1)
+        )
     }
 }
 
