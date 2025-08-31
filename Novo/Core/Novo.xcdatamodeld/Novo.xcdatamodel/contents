@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24G84" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="DayLog" representedClassName="DayLog" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dailyNotes" optional="YES" attributeType="String"/>
+        <attribute name="calories" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="protein" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="weight" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <relationship name="injections" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Injection" inverseName="dayLog" inverseEntity="Injection"/>
+        <relationship name="sideEffects" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SideEffect" inverseName="dayLog" inverseEntity="SideEffect"/>
+    </entity>
+    <entity name="Injection" representedClassName="Injection" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="medication" optional="YES" attributeType="String"/>
+        <attribute name="dose" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="site" optional="YES" attributeType="String"/>
+        <attribute name="painLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <relationship name="dayLog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DayLog" inverseName="injections" inverseEntity="DayLog"/>
+    </entity>
+    <entity name="SideEffect" representedClassName="SideEffect" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="severity" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="dayLog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DayLog" inverseName="sideEffects" inverseEntity="DayLog"/>
+    </entity>
     <entity name="UserProfile" representedClassName="UserProfile" syncable="YES" codeGenerationType="class">
         <attribute name="activityLevel" optional="YES" attributeType="String"/>
         <attribute name="agreedToTerms" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -12,13 +39,13 @@
         <attribute name="height" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="journeyStatus" optional="YES" attributeType="String"/>
+        <attribute name="lastShotDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="medication" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="shotFrequency" optional="YES" attributeType="Integer 32" usesScalarValueType="NO"/>
-        <attribute name="startWeight" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
-        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="lastShotDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="useMetric" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="onboardingCompletedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="shotFrequency" optional="YES" attributeType="Integer 32" usesScalarValueType="NO"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="startWeight" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
+        <attribute name="useMetric" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
 </model>

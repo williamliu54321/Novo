@@ -1,0 +1,18 @@
+{
+  "" : {
+    "diagnostics" : "/Users/williamliu/Library/Developer/Xcode/DerivedData/Novo-bccazbjhqdnvmjekxzenywetitik/SourcePackages/checkouts/Superscript-iOS/build/Superscript.build/Debug-iphonesimulator/Superscript.build/Objects-normal/arm64/Superscript-master.dia",
+    "emit-module-dependencies" : "/Users/williamliu/Library/Developer/Xcode/DerivedData/Novo-bccazbjhqdnvmjekxzenywetitik/SourcePackages/checkouts/Superscript-iOS/build/Superscript.build/Debug-iphonesimulator/Superscript.build/Objects-normal/arm64/Superscript-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/williamliu/Library/Developer/Xcode/DerivedData/Novo-bccazbjhqdnvmjekxzenywetitik/SourcePackages/checkouts/Superscript-iOS/build/Superscript.build/Debug-iphonesimulator/Superscript.build/Objects-normal/arm64/Superscript-master-emit-module.dia",
+    "swift-dependencies" : "/Users/williamliu/Library/Developer/Xcode/DerivedData/Novo-bccazbjhqdnvmjekxzenywetitik/SourcePackages/checkouts/Superscript-iOS/build/Superscript.build/Debug-iphonesimulator/Superscript.build/Objects-normal/arm64/Superscript-master.swiftdeps"
+  },
+  "/Users/williamliu/Library/Developer/Xcode/DerivedData/Novo-bccazbjhqdnvmjekxzenywetitik/SourcePackages/checkouts/Superscript-iOS/Sources/Superscript/cel.swift" : {
+    "const-values" : "/Users/williamliu/Library/Developer/Xcode/DerivedData/Novo-bccazbjhqdnvmjekxzenywetitik/SourcePackages/checkouts/Superscript-iOS/build/Superscript.build/Debug-iphonesimulator/Superscript.build/Objects-normal/arm64/cel.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Library/Developer/Xcode/DerivedData/Novo-bccazbjhqdnvmjekxzenywetitik/SourcePackages/checkouts/Superscript-iOS/build/Superscript.build/Debug-iphonesimulator/Superscript.build/Objects-normal/arm64/cel.d",
+    "diagnostics" : "/Users/williamliu/Library/Developer/Xcode/DerivedData/Novo-bccazbjhqdnvmjekxzenywetitik/SourcePackages/checkouts/Superscript-iOS/build/Superscript.build/Debug-iphonesimulator/Superscript.build/Objects-normal/arm64/cel.dia",
+    "index-unit-output-path" : "/Superscript.build/Debug-iphonesimulator/Superscript.build/Objects-normal/arm64/cel.o",
+    "llvm-bc" : "/Users/williamliu/Library/Developer/Xcode/DerivedData/Novo-bccazbjhqdnvmjekxzenywetitik/SourcePackages/checkouts/Superscript-iOS/build/Superscript.build/Debug-iphonesimulator/Superscript.build/Objects-normal/arm64/cel.bc",
+    "object" : "/Users/williamliu/Library/Developer/Xcode/DerivedData/Novo-bccazbjhqdnvmjekxzenywetitik/SourcePackages/checkouts/Superscript-iOS/build/Superscript.build/Debug-iphonesimulator/Superscript.build/Objects-normal/arm64/cel.o",
+    "swift-dependencies" : "/Users/williamliu/Library/Developer/Xcode/DerivedData/Novo-bccazbjhqdnvmjekxzenywetitik/SourcePackages/checkouts/Superscript-iOS/build/Superscript.build/Debug-iphonesimulator/Superscript.build/Objects-normal/arm64/cel.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Library/Developer/Xcode/DerivedData/Novo-bccazbjhqdnvmjekxzenywetitik/SourcePackages/checkouts/Superscript-iOS/build/Superscript.build/Debug-iphonesimulator/Superscript.build/Objects-normal/arm64/cel~partial.swiftmodule"
+  }
+}

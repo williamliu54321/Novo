@@ -7,7 +7,6 @@ struct OnboardingSingleSelectionView<SelectionValue: Hashable>: View {
     @EnvironmentObject var viewModel: OnboardingViewModel
     @Environment(\.dismiss) private var dismiss
 
-    // --- Generic Properties ---
     private let title: String
     private let subtitle: String?
     private let options: [(title: String, value: SelectionValue)] // Connects display text to data
@@ -15,7 +14,6 @@ struct OnboardingSingleSelectionView<SelectionValue: Hashable>: View {
     private let nextStep: OnboardingStep
     private let progress: Double
     
-    // --- Closures for Customization and Conversion ---
     private let customButtonTitle: String?
     private let customModalTitle: String?
     private let customModalPlaceholder: String?

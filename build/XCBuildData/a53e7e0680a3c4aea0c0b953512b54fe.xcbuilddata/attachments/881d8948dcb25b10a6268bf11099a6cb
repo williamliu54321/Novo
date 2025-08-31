@@ -1,0 +1,4 @@
+module SuperwallKit {
+header "SuperwallKit-Swift.h"
+export *
+}

@@ -1,0 +1,4 @@
+module Superscript {
+header "Superscript-Swift.h"
+export *
+}

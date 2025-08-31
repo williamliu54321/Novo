@@ -2373,7 +2373,7 @@ private struct FeatureHighlight: View {
 
 // MARK: - Personal Plan View
 private struct PersonalPlanView: View {
-    let viewModel: OnboardingViewModel
+    @ObservedObject var viewModel: OnboardingViewModel
     let onContinue: () -> Void
     
     @State private var animateContent = false
@@ -2407,6 +2407,23 @@ private struct PersonalPlanView: View {
                 
                 ScrollView {
                     VStack(spacing: 24) {
+                        // Debug info (remove later)
+                        if viewModel.currentWeight == nil && viewModel.dreamWeight == nil {
+                            VStack {
+                                Image(systemName: "exclamationmark.triangle")
+                                    .font(.largeTitle)
+                                    .foregroundColor(.yellow)
+                                Text("No weight data available")
+                                    .foregroundColor(.white)
+                                Text("Please complete the weight questions in onboarding")
+                                    .font(.caption)
+                                    .foregroundColor(.white.opacity(0.7))
+                            }
+                            .padding()
+                            .background(Color.orange.opacity(0.2))
+                            .cornerRadius(12)
+                        }
+                        
                         // Weight Goal Card
                         VStack(alignment: .leading, spacing: 16) {
                             HStack {
@@ -2426,7 +2443,7 @@ private struct PersonalPlanView: View {
                                     Text("Current")
                                     	.font(.caption)
                                         .foregroundColor(.white.opacity(0.6))
-                                    Text(formatWeight(viewModel.currentWeight ?? 0))
+                                    Text(viewModel.currentWeight != nil ? formatWeight(viewModel.currentWeight!) : "Not set")
                                         .font(.title2)
                                         .bold()
                                         .foregroundColor(.white)
@@ -2440,7 +2457,7 @@ private struct PersonalPlanView: View {
                                     Text("Goal")
                                         .font(.caption)
                                         .foregroundColor(.white.opacity(0.6))
-                                    Text(formatWeight(viewModel.dreamWeight ?? 0))
+                                    Text(viewModel.dreamWeight != nil ? formatWeight(viewModel.dreamWeight!) : "Not set")
                                         .font(.title2)
                                         .bold()
                                         .foregroundColor(.green)
@@ -2453,7 +2470,7 @@ private struct PersonalPlanView: View {
                                         .font(.caption)
                                         .foregroundColor(.white.opacity(0.6))
                                     let totalLoss = (viewModel.currentWeight ?? 0) - (viewModel.dreamWeight ?? 0)
-                                    Text(formatWeight(totalLoss))
+                                    Text(totalLoss > 0 ? formatWeight(totalLoss) : "—")
                                         .font(.title3)
                                         .bold()
                                         .foregroundColor(.pink)
@@ -2495,7 +2512,7 @@ private struct PersonalPlanView: View {
                                     Text("Medication:")
                                         .font(.subheadline)
                                         .foregroundColor(.white.opacity(0.7))
-                                    Text(viewModel.medication ?? "Not selected")
+                                    Text(viewModel.medication ?? "Not selected yet")
                                         .font(.subheadline)
                                         .bold()
                                         .foregroundColor(.white)
@@ -2633,6 +2650,64 @@ private struct PersonalPlanView: View {
                         .cornerRadius(16)
                         .opacity(animateContent ? 1.0 : 0.0)
                         .animation(.easeOut(duration: 0.5).delay(0.4), value: animateContent)
+                        
+                        // Show plan preview even with partial data
+                        if viewModel.currentWeight == nil || viewModel.dreamWeight == nil {
+                            VStack(alignment: .leading, spacing: 16) {
+                                HStack {
+                                    Image(systemName: "sparkles")
+                                        .font(.title2)
+                                        .foregroundColor(.purple)
+                                    
+                                    Text("Your Journey Starts Here")
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                    
+                                    Spacer()
+                                }
+                                
+                                Text("Based on your responses, we'll create a personalized plan to help you succeed with your GLP-1 journey.")
+                                    .font(.subheadline)
+                                    .foregroundColor(.white.opacity(0.9))
+                                
+                                VStack(alignment: .leading, spacing: 12) {
+                                    HStack(spacing: 12) {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .foregroundColor(.green)
+                                        Text("Medication: \(viewModel.medication ?? "To be determined")")
+                                            .foregroundColor(.white)
+                                    }
+                                    
+                                    if let dose = viewModel.dose, dose > 0 {
+                                        HStack(spacing: 12) {
+                                            Image(systemName: "checkmark.circle.fill")
+                                                .foregroundColor(.green)
+                                            Text("Starting dose: \(String(format: "%.2f", dose)) mg")
+                                                .foregroundColor(.white)
+                                        }
+                                    }
+                                    
+                                    HStack(spacing: 12) {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .foregroundColor(.green)
+                                        Text("Personalized tracking dashboard")
+                                            .foregroundColor(.white)
+                                    }
+                                    
+                                    HStack(spacing: 12) {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .foregroundColor(.green)
+                                        Text("AI-powered insights")
+                                            .foregroundColor(.white)
+                                    }
+                                }
+                                .font(.subheadline)
+                            }
+                            .padding()
+                            .background(Color.white.opacity(0.1))
+                            .cornerRadius(16)
+                            .opacity(animateContent ? 1.0 : 0.0)
+                        }
                         
                         // Personalized Tips
                         VStack(alignment: .leading, spacing: 16) {

@@ -1,0 +1,14 @@
+Target dependency graph (6 targets)
+Target 'Novo' in project 'Novo'
+➜ Explicit dependency on target 'SuperwallKit' in project 'SuperwallKit'
+Target 'SuperwallKit' in project 'SuperwallKit'
+➜ Explicit dependency on target 'SuperwallKit' in project 'SuperwallKit'
+➜ Explicit dependency on target 'SuperwallKit_SuperwallKit' in project 'SuperwallKit'
+➜ Explicit dependency on target 'Superscript' in project 'Superscript'
+Target 'SuperwallKit' in project 'SuperwallKit'
+➜ Explicit dependency on target 'SuperwallKit_SuperwallKit' in project 'SuperwallKit'
+➜ Explicit dependency on target 'Superscript' in project 'Superscript'
+Target 'Superscript' in project 'Superscript'
+➜ Explicit dependency on target 'Superscript' in project 'Superscript'
+Target 'Superscript' in project 'Superscript' (no dependencies)
+Target 'SuperwallKit_SuperwallKit' in project 'SuperwallKit' (no dependencies)

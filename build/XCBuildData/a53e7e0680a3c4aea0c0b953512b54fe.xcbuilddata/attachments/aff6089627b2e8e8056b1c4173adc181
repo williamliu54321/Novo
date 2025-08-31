@@ -1,0 +1,198 @@
+{
+  "" : {
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Novo-master.dia",
+    "emit-module-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Novo-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Novo-master-emit-module.dia",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Novo-master.swiftdeps"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/Core/NovoApp.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/NovoApp.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/NovoApp.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/NovoApp.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/NovoApp.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/NovoApp.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/NovoApp.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/NovoApp.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/NovoApp~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/CoreViews/ContentView.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/ContentView.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/ContentView.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/ContentView.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/ContentView.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/ContentView.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/ContentView.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/ContentView.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/ContentView~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/CoreViews/RootView.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/RootView.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/RootView.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/RootView.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/RootView.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/RootView.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/RootView.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/RootView.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/RootView~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/Onboarding/OnboardingFlowView.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingFlowView.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingFlowView.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingFlowView.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingFlowView.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingFlowView.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingFlowView.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingFlowView.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingFlowView~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/Onboarding/OnboardingIntroView.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingIntroView.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingIntroView.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingIntroView.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingIntroView.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingIntroView.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingIntroView.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingIntroView.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingIntroView~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/Onboarding/OnboardingJourneyStartView.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingJourneyStartView.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingJourneyStartView.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingJourneyStartView.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingJourneyStartView.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingJourneyStartView.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingJourneyStartView.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingJourneyStartView.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingJourneyStartView~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/Onboarding/OnboardingPageInfo.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingPageInfo.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingPageInfo.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingPageInfo.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingPageInfo.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingPageInfo.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingPageInfo.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingPageInfo.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingPageInfo~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/Onboarding/OnboardingViewModel.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingViewModel.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingViewModel.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingViewModel.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingViewModel.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingViewModel.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingViewModel.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingViewModel.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingViewModel~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/Onboarding/UI Components/CustomValueInputView.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/CustomValueInputView.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/CustomValueInputView.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/CustomValueInputView.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/CustomValueInputView.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/CustomValueInputView.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/CustomValueInputView.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/CustomValueInputView.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/CustomValueInputView~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/Onboarding/UI Components/OnboardingButton.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingButton.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingButton.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingButton.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingButton.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingButton.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingButton.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingButton.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingButton~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/Onboarding/UI Components/OnboardingHeaderView.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingHeaderView.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingHeaderView.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingHeaderView.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingHeaderView.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingHeaderView.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingHeaderView.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingHeaderView.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingHeaderView~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/Onboarding/UI Components/OnboardingSelectionButton.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSelectionButton.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSelectionButton.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSelectionButton.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSelectionButton.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSelectionButton.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSelectionButton.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSelectionButton.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSelectionButton~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/Onboarding/UI Components/OnboardingSingleSelectionView.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSingleSelectionView.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSingleSelectionView.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSingleSelectionView.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSingleSelectionView.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSingleSelectionView.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSingleSelectionView.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSingleSelectionView.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/OnboardingSingleSelectionView~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/Persistence.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Persistence.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Persistence.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Persistence.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Persistence.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Persistence.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Persistence.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Persistence.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Persistence~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/Novo/QuestionNameView.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/QuestionNameView.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/QuestionNameView.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/QuestionNameView.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/QuestionNameView.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/QuestionNameView.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/QuestionNameView.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/QuestionNameView.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/QuestionNameView~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/DerivedSources/CoreDataGenerated/Novo/Novo+CoreDataModel.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Novo+CoreDataModel.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Novo+CoreDataModel.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Novo+CoreDataModel.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Novo+CoreDataModel.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Novo+CoreDataModel.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Novo+CoreDataModel.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Novo+CoreDataModel.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/Novo+CoreDataModel~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/DerivedSources/CoreDataGenerated/Novo/UserProfile+CoreDataClass.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataClass.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataClass.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataClass.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataClass.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataClass.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/DerivedSources/CoreDataGenerated/Novo/UserProfile+CoreDataProperties.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataProperties.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataProperties.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataProperties.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataProperties.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/UserProfile+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/williamliu/Projects/Novo/build/Novo.build/Debug-iphonesimulator/Novo.build/Objects-normal/x86_64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}
