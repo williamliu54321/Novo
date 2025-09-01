@@ -1,68 +1,6 @@
-//
-//  MainAppView.swift
-//  Novo
-//
-//  Created by William Liu on 2025-08-30.
-//
-
 import SwiftUI
 import CoreData
 
-// MARK: - Main App View with Tab Bar
-struct MainAppView: View {
-    @State private var selectedTab = 0
-    
-    var body: some View {
-        TabView(selection: $selectedTab) {
-            // Summary Tab
-            Text("Summary Content")
-                .font(.title2)
-                .tabItem {
-                    Image(systemName: selectedTab == 0 ? "list.bullet.clipboard.fill" : "list.bullet.clipboard")
-                    Text("Summary")
-                }
-                .tag(0)
-            
-            // Shots Tab
-            Text("Shots Content")
-                .font(.title2)
-                .tabItem {
-                    Image(systemName: selectedTab == 1 ? "syringe.fill" : "syringe")
-                    Text("Shots")
-                }
-                .tag(1)
-            
-            // Results Tab
-            Text("Results Content")
-                .font(.title2)
-                .tabItem {
-                    Image(systemName: selectedTab == 2 ? "chart.bar.xaxis" : "chart.bar")
-                    Text("Results")
-                }
-                .tag(2)
-            
-            // Calendar Tab
-            CalendarTabView()
-                .tabItem {
-                    Image(systemName: selectedTab == 3 ? "calendar" : "calendar")
-                    Text("Calendar")
-                }
-                .tag(3)
-            
-            // Settings Tab
-            Text("Settings Content")
-                .font(.title2)
-                .tabItem {
-                    Image(systemName: selectedTab == 4 ? "gearshape.fill" : "gearshape")
-                    Text("Settings")
-                }
-                .tag(4)
-        }
-        .accentColor(.blue)
-    }
-}
-
-// MARK: - Calendar Tab View
 struct CalendarTabView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @State private var selectedDate = Date()
@@ -309,26 +247,32 @@ struct CalendarTabView: View {
     }
     
     private func hasShot(for date: Date) -> Bool {
-        return false
+        // Check if there's an injection for this date in Core Data
+        return false // Placeholder
     }
     
     private func getShotValue() -> String? {
+        // Get shot data from Core Data for selected date
         return nil
     }
     
     private func getWeightValue() -> String? {
-        return "90.0kg"
+        // Get weight from Core Data for selected date
+        return "90.0kg" // Placeholder
     }
     
     private func getCaloriesValue() -> String? {
+        // Get calories from Core Data for selected date
         return nil
     }
     
     private func getProteinValue() -> String? {
+        // Get protein from Core Data for selected date
         return nil
     }
     
     private func getNotesValue() -> String? {
+        // Get notes from Core Data for selected date
         return nil
     }
 }
@@ -603,5 +547,6 @@ struct EditFieldSheet: View {
     
     private func saveData() {
         // Save to Core Data based on field type
+        // Implementation depends on your Core Data setup
     }
 }
